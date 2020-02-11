@@ -1,10 +1,6 @@
 package frc.robot.config;
 
 public class Constants {
-    /**
-     * Use This File Only For Emergencies (like JSONConstants cannot find the config
-     * file)
-     */
 
     /**
      * =====================

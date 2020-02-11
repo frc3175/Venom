@@ -1,23 +1,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.config.*;
+import frc.robot.config.Constants;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.LEDs;
 import frc.robot.utilities.Utils;
-import jdk.jshell.Diag;
 
 public class TeleOp {
     private static XBoxController manip;
     private static XBoxController driver;
     private static TeleOp instance;
-    private static double[] rocketSetpoints = { 100.0, 200.0, 300.0 };
-    private static int currentSetpoint = 0;
     private static Timer clock, agitator;
-    private static boolean wasStartPressed = false;
 
     public static TeleOp getInstance() {
         if (instance == null)
@@ -32,43 +27,14 @@ public class TeleOp {
 
     public static void init() {
 
-        // SmartDashboard stuff
-
-        // SmartDashboard.putNumber("P Gain", Constants.ELEVATOR_kP);
-        // SmartDashboard.putNumber("I Gain", Constants.ELEVATOR_kI);
-        // SmartDashboard.putNumber("D Gain", Constants.ELEVATOR_kD);
-        // SmartDashboard.putNumber("I Zone", Constants.ELEVATOR_kIZ);
-        // SmartDashboard.putNumber("Feed Forward", Constants.ELEVATOR_kFF);
-        // SmartDashboard.putNumber("Max Output", Constants.ELEVATOR_MAX_OUTPUT);
-        // SmartDashboard.putNumber("Min Output", Constants.ELEVATOR_MIN_OUTPUT);
-
-        // SmartDashboard.putNumber("Max Velocity", Constants.ELEVATOR_MAX_VEL);
-        // SmartDashboard.putNumber("Min Velocity", Constants.ELEVATOR_MIN_VEL);
-        // SmartDashboard.putNumber("Max Acceleration", Constants.ELEVATOR_MAX_ACC);
-        // SmartDashboard.putNumber("Allowed Loop Error",
-        // Constants.ELEVATOR_ALLOWED_ERR);
         clock = new Timer();
         agitator = new Timer();
 
         Thread thread1 = new Thread(() -> {
             while (!Thread.interrupted()) {
 
-                // if(Math.abs(DriveTrain.getAvgVelocity()) > 3500d && !driver.getLeftBumper()
-                // && !driver.getRightBumper() && !DriveTrain.getShifted()){
-                // DriveTrain.shiftUp();
-
-                // try{
-                // Thread.sleep(3000);
-                // }catch(InterruptedException ie){
-                // ie.printStackTrace();
-                // System.exit(-1);
-                // }
-                // }else{
-                // DriveTrain.shiftDown();
-                // }
-
-                // Diagnostics.pushElevatorDiagnostics();
-                // Diagnostics.pushIngestorDiagnostics();
+                //Diagnostics.pushClimberDiagnostics();
+                Diagnostics.pushIntakeDiagnostics();
                 Diagnostics.pushDriveTrainDiagnostics();
                 try {
                     Thread.sleep(100);
@@ -79,18 +45,6 @@ public class TeleOp {
             }
         });
 
-        // Thread thread2 = new Thread(() -> {
-        // while(!Thread.interrupted()){
-        // long startTime = System.currentTimeMillis();
-        // Diagnostics.pushErrorDiagnostics();
-        // try{
-        // Thread.sleep(20);
-        // }catch(InterruptedException ie){
-        // ie.printStackTrace();
-        // return;
-        // }
-        // }
-        // });
 
         thread1.setPriority(1);
         // thread2.setPriority(1);
@@ -98,8 +52,8 @@ public class TeleOp {
         thread1.start();
         // thread2.start();
 
-        // TODO: Turn on LEDs
-        // LEDs.setNeutral();
+        //LEDS
+        LEDs.setNormal();
 
         // Start Agitator Clock
         agitator.start();

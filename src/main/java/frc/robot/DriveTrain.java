@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 @SuppressWarnings("all")
 public class DriveTrain implements PIDOutput{
     private static WPI_TalonFX rightMotorFront, rightMotorBack, leftMotorFront, leftMotorBack;
-    private static AHRS hyro;
+    private static AHRS gyro;
     private static Solenoid shifter;
-    private static PIDController hyropid;
+    private static PIDController gyropid;
     public static DriveTrain instance = null;
     
     public static DriveTrain getInstance(){
@@ -37,13 +37,13 @@ public class DriveTrain implements PIDOutput{
         leftMotorFront = new WPI_TalonFX(Constants.DT_TALON_LEFTFRONT);
         leftMotorBack = new WPI_TalonFX(Constants.DT_TALON_LEFTBACK);
 
-        hyro = new AHRS(SPI.Port.kMXP);
-        hyropid = new PIDController(1, 0, 0, hyro, this);
-        hyropid.setInputRange(-180d, 180d);
-        hyropid.setOutputRange(-1.0, 1.0);
+        gyro = new AHRS(SPI.Port.kMXP);
+        gyropid = new PIDController(1, 0, 0, gyro, this);
+        gyropid.setInputRange(-180d, 180d);
+        gyropid.setOutputRange(-1.0, 1.0);
 
-        hyropid.setAbsoluteTolerance(2d);
-        hyropid.setContinuous(true);
+        gyropid.setAbsoluteTolerance(2d);
+        gyropid.setContinuous(true);
 
 
         rightMotorFront.config_kP(0, Constants.kP, 50);
@@ -78,7 +78,7 @@ public class DriveTrain implements PIDOutput{
     }
 
     public static double getAHRS(){
-        return hyro.getAngle();
+        return gyro.getAngle();
     }
 
     public static void shiftUp(){
@@ -115,22 +115,22 @@ public class DriveTrain implements PIDOutput{
     }
 
     public static void turnToAngle(double angle){
-		hyropid.setSetpoint(angle);
-		if(!hyropid.isEnabled()){
+		gyropid.setSetpoint(angle);
+		if(!gyropid.isEnabled()){
 			System.out.println("PID Enabled");
-			hyropid.reset();
-			hyropid.enable();
+			gyropid.reset();
+			gyropid.enable();
 		}	
     }
     
 	@Override
 	public void pidWrite(double output) {
 		// TODO Auto-generated method stub
-		if (Math.abs(hyropid.getError()) < 5d) {
-			hyropid.setPID(hyropid.getP(), .001, 0);
+		if (Math.abs(gyropid.getError()) < 5d) {
+			gyropid.setPID(gyropid.getP(), .001, 0);
 		} else {
 			// I Zone
-			hyropid.setPID(hyropid.getP(), 0, 0);
+			gyropid.setPID(gyropid.getP(), 0, 0);
         }
 
         
@@ -141,14 +141,14 @@ public class DriveTrain implements PIDOutput{
 
     public static void pidDisable(){
         System.out.println("PID Disabled");
-        hyropid.disable();
+        gyropid.disable();
     }
 
     public static void pidEnable(){
-        hyropid.enable();
+        gyropid.enable();
     }
     public static boolean ispidEnabled(){
-        return hyropid.isEnabled();
+        return gyropid.isEnabled();
     }
 
     //Diagnostics
