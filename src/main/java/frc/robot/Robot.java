@@ -7,13 +7,21 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.automodes.AutonMode;
+import frc.robot.automodes.DriveStraight;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.LEDs;
 
 public class Robot extends TimedRobot{
+
+  AutonMode autonCommand;
+	SendableChooser<AutonMode> autoChooser;
 
   @Override
   public void robotInit() {
@@ -25,18 +33,24 @@ public class Robot extends TimedRobot{
     Diagnostics.getInstance();
     LEDs.getInstance();
 
-    
+    autoChooser = new SendableChooser<AutonMode>();
+    autoChooser.setDefaultOption("Shoot and Pass Line and turn n stuff", new DriveStraight());
+
+    SmartDashboard.putData("Auto mode", autoChooser);
+    SmartDashboard.putNumber("Match Time:", DriverStation.getInstance().getMatchTime());
+
   }
 
   @Override
   public void autonomousInit() {
-    TeleOp.init();
+		autoChooser.getSelected().start();
   }
 
 
   @Override
   public void autonomousPeriodic() {
-    TeleOp.run();
+    SmartDashboard.putNumber("Drive Train", DriveTrain.getEncoderAverage());
+		SmartDashboard.putNumber("AUTO GYRO", DriveTrain.getAngle());
   }
   
   @Override
