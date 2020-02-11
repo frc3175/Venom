@@ -53,8 +53,9 @@ public class Constants {
     public static final int HOPPER_SPEED = 1;
     public static final double HOPPER_AGITATION_FORWARD = 1;
     public static final double HOPPER_AGITATION_REVERSE = -0.49;
-    public static final double TOP_MOTOR_SPEED = 0.7;
+    public static final double TOP_MOTOR_SPEED_LINE = 0.7;
     public static final double BOTTOM_MOTOR_SPEED = 1;
+    public static final double TOP_MOTOR_SPEED_TRENCH = 0.8;
 
     
     /**

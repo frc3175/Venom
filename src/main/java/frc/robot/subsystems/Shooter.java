@@ -53,6 +53,12 @@ public class Shooter{
         }
     }
 
+    public static void stop() {
+        topShooterTalon.set(ControlMode.PercentOutput, 0);
+        bottomShooterTalon.set(ControlMode.PercentOutput, 0);
+        hopperTalon.set(ControlMode.PercentOutput, 0);
+    }
+
     //Diagnostic Information
     public static boolean isTopShooterAlive(){
         return (topShooterTalon.getBusVoltage() != 0.0);

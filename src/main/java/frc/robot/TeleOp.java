@@ -139,7 +139,7 @@ public class TeleOp {
         // Shooter
         if (manip.getBButton()) {
             LEDs.setFast();
-            Shooter.shoot(Constants.TOP_MOTOR_SPEED, Constants.BOTTOM_MOTOR_SPEED);
+            Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED);
         } else {
             LEDs.setNormal();
             Shooter.shoot(0, 0);
