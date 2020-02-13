@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.DigitalOutput;
 import frc.robot.config.Constants;
 
 public class LEDs {
-    private static DigitalOutput leds;
+    private static DigitalOutput shooterLEDs, flashbangMode;
     private static LEDs instance;
 
     public static LEDs getInstance(){
-        if(leds == null){
+        if(shooterLEDs== null){
             instance = new LEDs();
         }
 
@@ -16,13 +16,19 @@ public class LEDs {
     }
 
     private LEDs(){
-        leds = new DigitalOutput(Constants.LED_CHANNEL);
+        shooterLEDs = new DigitalOutput(Constants.LED_CHANNEL_1);
+        flashbangMode = new DigitalOutput(Constants.LED_CHANNEL_2);
+
     }
 
-    public static void setFast(){
-        leds.set(true);
+    public static void setShooterLEDsFast(){
+        shooterLEDs.set(true);
     }
-    public static void setNormal() {
-        leds.set(false);
+    public static void setShooterLEDsNormal() {
+        shooterLEDs.set(false);
+    }
+
+    public static void flashbangOff() {
+        flashbangMode.set(false);
     }
 }

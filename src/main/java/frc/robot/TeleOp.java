@@ -56,7 +56,7 @@ public class TeleOp {
         // thread2.start();
 
         //LEDS
-        LEDs.setNormal();
+        LEDs.setShooterLEDsNormal();
 
         // Start Agitator Clock
         agitator.start();
@@ -65,9 +65,9 @@ public class TeleOp {
 
     public static void run() {
         /**
-         * ============================ 
-         *    DRIVER CONTROLS BELOW
-         * ============================
+         * ===============================================================================
+         *                               Drive Controls
+         * ===============================================================================
          */
         long startTime = System.currentTimeMillis();
 
@@ -107,9 +107,9 @@ public class TeleOp {
         }
 
         /**
-         * ============================ 
-         *     MANIP CONTROLS BELOW
-         * ============================
+         * ===============================================================================
+         *                               MANIP CONTROLS BELOW
+         * ===============================================================================
          */
 
         if (manip.getRightBumper()) {
@@ -117,6 +117,11 @@ public class TeleOp {
         }
 
         // Intake with agitator
+        /**
+         * ======================
+         *     Intake Control
+         * ======================
+         */
         if (manip.getYButton()) {
             Intake.intakeCell(Constants.INTAKE_SPEED);
             if (agitator.get() < 1) {
@@ -130,19 +135,27 @@ public class TeleOp {
             Intake.intakeCell(0);
         }
 
-        // Intake up and down
+        /**
+        * =====================
+        *     Intake Piston
+        * =====================
+        */
         if (manip.getXButton()) {
             Intake.IntakeUp();
         } else if (manip.getAButton()) {
             Intake.IntakeDown();
         }
 
-        // Shooter
+        /**
+        * =====================
+        *        Shooter
+        * =====================
+        */
         if (manip.getBButton()) {
-            LEDs.setFast();
+            LEDs.setShooterLEDsFast();
             Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED);
         } else {
-            LEDs.setNormal();
+            LEDs.setShooterLEDsNormal();
             Shooter.shoot(0, 0);
         }
         
