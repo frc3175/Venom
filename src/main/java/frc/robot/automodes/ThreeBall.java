@@ -2,7 +2,7 @@
 package frc.robot.automodes;
 
 import frc.robot.DriveTrain;
-import frc.robot.autocommands.ShootBall;
+//import frc.robot.autocommands.ShootBall;
 
 public class ThreeBall extends AutonMode {
 
@@ -20,7 +20,7 @@ public class ThreeBall extends AutonMode {
          */
         if (DriveTrain.isConnected()) {
             //Actual commands
-            ShootBall(.4);
+            //ShootBall(.4);
    
         } else {
             //easy commands

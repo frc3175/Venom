@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.ArrayList;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -10,14 +12,17 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpiutil.math.MathUtil;
 
 @SuppressWarnings("all")
 public class DriveTrain implements PIDOutput {
     private static WPI_TalonFX rightMotorFront, rightMotorBack, leftMotorFront, leftMotorBack;
     private static AHRS gyro;
-    private static Solenoid shifter;
     private static PIDController gyropid;
     public static DriveTrain instance = null;
+
+    private static double m_quickStopAccumulator;
+
 
     public static DriveTrain getInstance() {
         if (instance == null) {
@@ -45,28 +50,32 @@ public class DriveTrain implements PIDOutput {
         gyropid.setAbsoluteTolerance(2d);
         gyropid.setContinuous(true);
 
+        rightMotorBack.follow(rightMotorFront);
+        leftMotorBack.follow(leftMotorFront);
+
     }
 
     public static double getAngle() {
         return gyro.getAngle();
     }
 
-    public static void resetGyro(){
+    public static void resetGyro() {
         gyro.reset();
     }
 
-	public static void disablePID() {
-		gyropid.disable();
-	}
+    public static void disablePID() {
+        gyropid.disable();
+    }
+
     public static void drive(double powerLeft, double powerRight) {
         leftMotorFront.set(powerLeft);
-        leftMotorBack.set(powerRight);
         rightMotorFront.set(powerRight);
-        rightMotorBack.set(powerRight);
     }
-	public static boolean isConnected(){
-		return gyro.isConnected();
-	}
+
+    public static boolean isConnected() {
+        return gyro.isConnected();
+    }
+
     public static void arcadeDrive(double fwd, double tur) {
         // Arcade Drive
         drive(Utils.ensureRange(fwd + tur, -1d, 1d), Utils.ensureRange(fwd - tur, -1d, 1d));
@@ -91,20 +100,89 @@ public class DriveTrain implements PIDOutput {
 
     }
 
+    /**
+     * Curvature drive method for differential drive platform.
+     *
+     * <p>
+     * The rotation argument controls the curvature of the robot's path rather than
+     * its rate of heading change. This makes the robot more controllable at high
+     * speeds. Also handles the robot's quick turn functionality - "quick turn"
+     * overrides constant-curvature turning for turn-in-place maneuvers.
+     *
+     * @param xSpeed      The robot's speed along the X axis [-1.0..1.0]. Forward is
+     *                    positive.
+     * @param zRotation   The robot's rotation rate around the Z axis [-1.0..1.0].
+     *                    Clockwise is positive.
+     * @param isQuickTurn If set, overrides constant-curvature turning for
+     *                    turn-in-place maneuvers.
+     */
+    @SuppressWarnings({ "ParameterName", "PMD.CyclomaticComplexity" })
+    public static void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
+
+        xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0);
+
+        zRotation = MathUtil.clamp(zRotation, -1.0, 1.0);
+
+        double angularPower;
+        boolean overPower;
+
+        if (isQuickTurn) {
+            if (Math.abs(xSpeed) < Constants.kDefaultQuickStopThreshold) {
+                m_quickStopAccumulator = (1 - Constants.kDefaultQuickStopAlpha) * m_quickStopAccumulator
+                        + Constants.kDefaultQuickStopAlpha * MathUtil.clamp(zRotation, -1.0, 1.0) * 2;
+            }
+            overPower = true;
+            angularPower = zRotation;
+        } else {
+            overPower = false;
+            angularPower = Math.abs(xSpeed) * zRotation - m_quickStopAccumulator;
+
+            if (m_quickStopAccumulator > 1) {
+                m_quickStopAccumulator -= 1;
+            } else if (m_quickStopAccumulator < -1) {
+                m_quickStopAccumulator += 1;
+            } else {
+                m_quickStopAccumulator = 0.0;
+            }
+        }
+
+        double leftMotorOutput = xSpeed + angularPower;
+        double rightMotorOutput = xSpeed - angularPower;
+
+        // If rotation is overpowered, reduce both outputs to within acceptable range
+        if (overPower) {
+            if (leftMotorOutput > 1.0) {
+                rightMotorOutput -= leftMotorOutput - 1.0;
+                leftMotorOutput = 1.0;
+            } else if (rightMotorOutput > 1.0) {
+                leftMotorOutput -= rightMotorOutput - 1.0;
+                rightMotorOutput = 1.0;
+            } else if (leftMotorOutput < -1.0) {
+                rightMotorOutput -= leftMotorOutput + 1.0;
+                leftMotorOutput = -1.0;
+            } else if (rightMotorOutput < -1.0) {
+                leftMotorOutput -= rightMotorOutput + 1.0;
+                rightMotorOutput = -1.0;
+            }
+        }
+
+        // Normalize the wheel speeds
+        double maxMagnitude = Math.max(Math.abs(leftMotorOutput), Math.abs(rightMotorOutput));
+        if (maxMagnitude > 1.0) {
+            leftMotorOutput /= maxMagnitude;
+            rightMotorOutput /= maxMagnitude;
+        }
+
+        leftMotorFront.set(leftMotorOutput * 1);
+        rightMotorFront.set(rightMotorOutput * 1 * -1);
+    }
+
     public static double getAHRS() {
         return gyro.getAngle();
     }
 
-    public static void shiftUp() {
-        shifter.set(true);
-    }
-
-    public static void shiftDown() {
-        shifter.set(false);
-    }
-
-    public static boolean getShifted() {
-        return shifter.get();
+    public static void safeTurnLeft() {
+        leftMotorFront.set(ControlMode.PercentOutput, 0.2);
     }
 
     public static double getEncoderDistanceRight() {
@@ -179,11 +257,11 @@ public class DriveTrain implements PIDOutput {
         return gyropid.isEnabled();
     }
 
-    public static void resetEncoder(){
-		leftMotorFront.setSelectedSensorPosition(0, 0, 10);
-		rightMotorFront.setSelectedSensorPosition(0, 0, 10);
-		
-	}
+    public static void resetEncoder() {
+        leftMotorFront.setSelectedSensorPosition(0, 0, 10);
+        rightMotorFront.setSelectedSensorPosition(0, 0, 10);
+
+    }
 
     // Diagnostics
     public static double getRightMotorFrontTemp() {

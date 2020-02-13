@@ -18,6 +18,13 @@ public class Utils {
 			return v;
 		}	
 	}
+	
+	public static double deadband(double val, double threshold) {
+        if (Math.abs(val) < threshold) {
+            return 0;
+        }
+        return val;
+    }
 
 	public static double addAngle(double ang1, double ang2){
 		return Math.acos(Math.cos(ang1)*Math.cos(ang2));

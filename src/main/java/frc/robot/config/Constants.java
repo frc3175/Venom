@@ -15,6 +15,16 @@ public class Constants {
     public static final int DT_TALON_RIGHTFRONT = 12; // CAN
     public static final int DT_TALON_RIGHTBACK = 13; // CAN
 
+    
+    public static final double kDefaultQuickStopThreshold = 0.2;
+    public static final double kDefaultQuickStopAlpha = 0.1;
+    public static final double driveDeadband = 0.2;
+
+    /**
+     * =====================
+     *     Limelight
+     * =====================
+     */
     // Limelight
     public static final int LIMELIGHT_VISION_TARGET = 1;
     public static final int LIMELIGHT_LINEUP_LINE_FRONT = 2;
@@ -27,6 +37,8 @@ public class Constants {
     public static final double LINEUP_FULL_SPEED = 1.0;
     public static final double LINEUP_HALF_SPEED = 0.5;
     public static final double DRIVE_STRAIGHT_CONSTANT = 1;
+
+  
 
     /**
      * =====================
@@ -93,7 +105,7 @@ public class Constants {
     public static final int XBOX_DRIVER = 0;
     public static final int XBOX_MANIP = 1;
 
-    public static final int LED_CHANNEL = 1;
+    public static final int LED_CHANNEL = 1;//30  2 > //32 3 > //34
     public static final double LIMELIGHT_P = 0.001;
     public static final double LIMELIGHT_I = 0;
     public static final double LIMELIGHT_D = 0;

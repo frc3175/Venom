@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.config.Constants;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -13,6 +14,8 @@ public class TeleOp {
     private static XBoxController driver;
     private static TeleOp instance;
     private static Timer clock, agitator;
+
+    
 
     public static TeleOp getInstance() {
         if (instance == null)
@@ -71,6 +74,9 @@ public class TeleOp {
         Limelight.changePipeline(0);
         // System.out.println("HAS VALID TARGETS: " + Limelight.hasValidTargets());
 
+        double linearSpeed = Utils.deadband(driver.getRawAxis(1), Constants.driveDeadband);
+        double curveSpeed = Utils.deadband(-driver.getRawAxis(4), Constants.driveDeadband);
+
         if (driver.getLeftBumper()) {
             Limelight.changePipeline(1);
 
@@ -78,35 +84,26 @@ public class TeleOp {
                 if (driver.getLeftBumper()) {
 
                     if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
-                        // Elevator.flipClawUp();
                         DriveTrain.arcadeDrive(0, 0.2);
                     } else {
                         Limelight.dumbLineup();
                     }
-                    // DriveTrain.arcadeDrive(0, 0.3);
                 } else {
                     if (DriveTrain.ispidEnabled()) {
                         DriveTrain.pidDisable();
                     }
-                    // Elevator.flipClawDown();
-                    DriveTrain.arcadeDrive(Utils.expoDeadzone(-driver.getLeftStickXAxis(), 0.1, 2),
-                            Utils.expoDeadzone(-driver.getRightStickYAxis(), 0.1, 1.2));
+                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper());
+                    //DriveTrain.arcadeDrive(Utils.expoDeadzone(-driver.getLeftStickXAxis(), 0.1, 2), Utils.expoDeadzone(-driver.getRightStickYAxis(), 0.1, 1.2));
+                    
                 }
 
             } else {
-                // DriveTrain.pidDisable();
-                // Limelight.changePipeline(1);
                 driver.setLeftRumble(0.0);
                 driver.setRightRumble(0.0);
-                if (driver.getLeftBumper()) {
-                    // DriveTrain.arcadeDrive(0, 0.);
-                } else {
-
-                }
             }
         } else {
-            DriveTrain.arcadeDrive(Utils.expoDeadzone(-driver.getLeftStickXAxis(), 0.1, 2),
-                    Utils.expoDeadzone(-driver.getRightStickYAxis(), 0.1, 1.2));
+            DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper());
+            //DriveTrain.arcadeDrive(Utils.expoDeadzone(-driver.getLeftStickXAxis(), 0.1, 2), Utils.expoDeadzone(-driver.getRightStickYAxis(), 0.1, 1.2));
         }
 
         /**
@@ -114,6 +111,10 @@ public class TeleOp {
          *     MANIP CONTROLS BELOW
          * ============================
          */
+
+        if (manip.getRightBumper()) {
+            DriveTrain.safeTurnLeft();
+        }
 
         // Intake with agitator
         if (manip.getYButton()) {
@@ -143,6 +144,11 @@ public class TeleOp {
         } else {
             LEDs.setNormal();
             Shooter.shoot(0, 0);
+        }
+        
+        //Climber fold -- input setpoint 
+        if(manip.getStartButton()) {
+            Climber.fold(3000);
         }
     }
 }

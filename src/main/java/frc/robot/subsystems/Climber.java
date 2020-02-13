@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.config.Constants;
 
 /**
@@ -17,6 +20,9 @@ public class Climber{
     private static Climber instance;
     private static TalonFX leftClimbTalon, rightClimbTalon;
     private static CANSparkMax leftNeo, rightNeo;
+
+    private static CANPIDController pid;
+    private static CANEncoder encoder;
 
     
 
@@ -33,6 +39,40 @@ public class Climber{
         leftNeo = new CANSparkMax(Constants.LEFT_NEO, MotorType.kBrushless);
         rightNeo = new CANSparkMax(Constants.RIGHT_NEO, MotorType.kBrushless);
 
+        leftNeo.restoreFactoryDefaults(true);
+        rightNeo.restoreFactoryDefaults(true);
+
+        leftNeo.follow(rightNeo);
+
+        pid = rightNeo.getPIDController();
+        encoder = rightNeo.getEncoder();
+
+
+            // PID coefficients
+        double kP = 6e-5;
+        double kI = 0;
+        double kD = 0; 
+        double kIz = 0; 
+        double kFF = 0.000015; 
+        double kMaxOutput = 1; 
+        double kMinOutput = -1;
+
+        pid.setP(kP);
+        pid.setI(kI);
+        pid.setD(kD);
+        pid.setIZone(kIz);
+        pid.setFF(kFF);
+        pid.setOutputRange(kMinOutput, kMaxOutput);
+
+        // display PID coefficients on SmartDashboard
+        SmartDashboard.putNumber("P Gain", kP);
+        SmartDashboard.putNumber("I Gain", kI);
+        SmartDashboard.putNumber("D Gain", kD);
+        SmartDashboard.putNumber("I Zone", kIz);
+        SmartDashboard.putNumber("Feed Forward", kFF);
+        SmartDashboard.putNumber("Max Output", kMaxOutput);
+        SmartDashboard.putNumber("Min Output", kMinOutput);
+
     }
 
     /**
@@ -44,8 +84,8 @@ public class Climber{
         rightClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
     }
 
-    public static void fold(double foldSpeed){
-        //TODO:WRite Pid for folding
+    public static void fold(double setPoint){
+        pid.setReference(setPoint, ControlType.kVelocity);
     }
 
     //Diagnostic Information
