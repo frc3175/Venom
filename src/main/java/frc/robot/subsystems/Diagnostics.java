@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.DriveTrain;
 
+@SuppressWarnings("unused")
 public class Diagnostics{
     private static Diagnostics instance;
     private static NetworkTableInstance inst;

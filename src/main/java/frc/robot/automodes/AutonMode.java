@@ -9,7 +9,6 @@ import frc.robot.autocommands.TurnToAngle;
 import frc.robot.autocommands.Wait;
 
 public abstract class AutonMode {
-    private String autonName;
 
     public void start() {
         run();

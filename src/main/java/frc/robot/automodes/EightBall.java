@@ -1,7 +1,6 @@
 
 package frc.robot.automodes;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.config.Constants;
 
 public class EightBall extends AutonMode {

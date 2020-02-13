@@ -16,6 +16,7 @@ import frc.robot.config.Constants;
  * Code meant for the Climber
  * </summary>
  */
+@SuppressWarnings("unused")
 public class Climber{
     private static Climber instance;
     private static TalonFX leftClimbTalon, rightClimbTalon;

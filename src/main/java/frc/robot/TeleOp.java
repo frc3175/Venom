@@ -9,6 +9,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.LEDs;
 import frc.robot.utilities.Utils;
 
+@SuppressWarnings("unused")
 public class TeleOp {
     private static XBoxController manip;
     private static XBoxController driver;
@@ -67,7 +68,7 @@ public class TeleOp {
     public static void run() {
         /**
          * ===============================================================================
-         *                               Drive Controls
+         *                               Driver Controls
          * ===============================================================================
          */
         long startTime = System.currentTimeMillis();
@@ -160,9 +161,13 @@ public class TeleOp {
             Shooter.shoot(0, 0);
         }
         
-        //Climber fold -- input setpoint 
+        /**
+        * =====================
+        *        Climber
+        * =====================
+        */
         if(manip.getStartButton()) {
-            Climber.fold(3000);
+            Climber.fold(3000); // fold to setpoint
         }
     }
 }

@@ -3,7 +3,7 @@ package frc.robot.autocommands;
 import frc.robot.DriveTrain;
 
 public class OneSideTurn extends AutoCommandBase {
-	private static double right, left;
+	private double right, left;
 	
 	public OneSideTurn(double timeOut, double left, double right) {
 		super(timeOut);

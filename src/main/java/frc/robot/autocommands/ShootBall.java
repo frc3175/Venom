@@ -2,7 +2,6 @@ package frc.robot.autocommands;
 
 import frc.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShootBall extends AutoCommandBase {
 	

@@ -2,7 +2,6 @@ package frc.robot.autocommands;
 
 import frc.robot.DriveTrain;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class TurnToAngle extends AutoCommandBase {
 	

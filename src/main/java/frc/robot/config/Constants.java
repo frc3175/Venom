@@ -25,7 +25,6 @@ public class Constants {
      *     Limelight
      * =====================
      */
-    // Limelight
     public static final int LIMELIGHT_VISION_TARGET = 1;
     public static final int LIMELIGHT_LINEUP_LINE_FRONT = 2;
     public static final int LIMELIGHT_LINEUP_LINE_MIDDLE = 3;
@@ -37,8 +36,6 @@ public class Constants {
     public static final double LINEUP_FULL_SPEED = 1.0;
     public static final double LINEUP_HALF_SPEED = 0.5;
     public static final double DRIVE_STRAIGHT_CONSTANT = 1;
-
-  
 
     /**
      * =====================

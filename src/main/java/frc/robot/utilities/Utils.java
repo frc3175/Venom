@@ -18,7 +18,7 @@ public class Utils {
 			return v;
 		}	
 	}
-	
+
 	public static double deadband(double val, double threshold) {
         if (Math.abs(val) < threshold) {
             return 0;
@@ -43,7 +43,6 @@ public class Utils {
 	}
 
 	public static double expoDeadzone(double input, double deadzone, double exponent){
-		//http://www.mimirgames.com/articles/games/joystick-input-and-using-deadbands/
 		if(Math.abs(input)<=deadzone)
 			return 0;
 		double deadzoned = (input - Math.signum(input) * deadzone)/(1-deadzone);

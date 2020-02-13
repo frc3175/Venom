@@ -2,7 +2,6 @@
 package frc.robot.automodes;
 
 import frc.robot.DriveTrain;
-import edu.wpi.first.wpilibj.DriverStation;
 
 public class DriveStraight extends AutonMode {
 

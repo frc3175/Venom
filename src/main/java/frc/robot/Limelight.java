@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.config.Constants;
 import frc.robot.utilities.Utils;
 
+@SuppressWarnings("unused")
 public class Limelight {
 	public static NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     public static DriverStation ds = DriverStation.getInstance();
