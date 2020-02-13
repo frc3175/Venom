@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.automodes.AutonMode;
 import frc.robot.automodes.DriveStraight;
+import frc.robot.automodes.SixBall;
+import frc.robot.automodes.ThreeBall;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -34,7 +36,9 @@ public class Robot extends TimedRobot{
     LEDs.getInstance();
 
     autoChooser = new SendableChooser<AutonMode>();
-    autoChooser.setDefaultOption("Shoot and Pass Line and turn n stuff", new DriveStraight());
+    autoChooser.setDefaultOption("Test Auton", new DriveStraight());
+    autoChooser.addOption("Three Ball Auto", new ThreeBall());
+    autoChooser.addOption("Six Ball Auto", new SixBall());
 
     SmartDashboard.putData("Auto mode", autoChooser);
     SmartDashboard.putNumber("Match Time:", DriverStation.getInstance().getMatchTime());

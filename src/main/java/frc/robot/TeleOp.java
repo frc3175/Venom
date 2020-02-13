@@ -62,9 +62,9 @@ public class TeleOp {
 
     public static void run() {
         /**
-         * ============================ 
-         *    DRIVER CONTROLS BELOW
-         * ============================
+         * ===============================================================================
+         *                               Drive Controls
+         * ===============================================================================
          */
         long startTime = System.currentTimeMillis();
 
@@ -110,12 +110,16 @@ public class TeleOp {
         }
 
         /**
-         * ============================ 
-         *     MANIP CONTROLS BELOW
-         * ============================
+         * ===============================================================================
+         *                               MANIP CONTROLS BELOW
+         * ===============================================================================
          */
 
-        // Intake with agitator
+        /**
+         * ======================
+         *     Intake Control
+         * ======================
+         */
         if (manip.getYButton()) {
             Intake.intakeCell(Constants.INTAKE_SPEED);
             if (agitator.get() < 1) {
@@ -129,14 +133,22 @@ public class TeleOp {
             Intake.intakeCell(0);
         }
 
-        // Intake up and down
+        /**
+        * =====================
+        *     Intake Piston
+        * =====================
+        */
         if (manip.getXButton()) {
             Intake.IntakeUp();
         } else if (manip.getAButton()) {
             Intake.IntakeDown();
         }
 
-        // Shooter
+        /**
+        * =====================
+        *        Shooter
+        * =====================
+        */
         if (manip.getBButton()) {
             LEDs.setFast();
             Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED);

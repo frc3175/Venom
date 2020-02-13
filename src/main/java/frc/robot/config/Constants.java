@@ -15,7 +15,11 @@ public class Constants {
     public static final int DT_TALON_RIGHTFRONT = 12; // CAN
     public static final int DT_TALON_RIGHTBACK = 13; // CAN
 
-    // Limelight
+    /**
+     * =====================
+     *      Limelight
+     * =====================
+     */
     public static final int LIMELIGHT_VISION_TARGET = 1;
     public static final int LIMELIGHT_LINEUP_LINE_FRONT = 2;
     public static final int LIMELIGHT_LINEUP_LINE_MIDDLE = 3;
