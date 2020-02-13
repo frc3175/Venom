@@ -56,6 +56,7 @@ public class TeleOp {
         // thread2.start();
 
         //LEDS
+        LEDs.sendAllianceOutput();
         LEDs.setShooterLEDsNormal();
 
         // Start Agitator Clock
