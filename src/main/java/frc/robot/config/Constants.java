@@ -97,7 +97,10 @@ public class Constants {
     public static final int XBOX_DRIVER = 0;
     public static final int XBOX_MANIP = 1;
 
-    public static final int LED_CHANNEL = 1;
+    public static final int LED_CHANNEL_1 = 1; // > 30
+    public static final int LED_CHANNEL_2 = 2; // > 32
+    public static final int LED_CHANNEL_3 = 3; // > 34
+    
     public static final double LIMELIGHT_P = 0.001;
     public static final double LIMELIGHT_I = 0;
     public static final double LIMELIGHT_D = 0;

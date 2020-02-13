@@ -53,7 +53,7 @@ public class TeleOp {
         // thread2.start();
 
         //LEDS
-        LEDs.setNormal();
+        LEDs.setShooterLEDsNormal();
 
         // Start Agitator Clock
         agitator.start();
@@ -150,10 +150,10 @@ public class TeleOp {
         * =====================
         */
         if (manip.getBButton()) {
-            LEDs.setFast();
+            LEDs.setShooterLEDsFast();
             Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED);
         } else {
-            LEDs.setNormal();
+            LEDs.setShooterLEDsNormal();
             Shooter.shoot(0, 0);
         }
     }
