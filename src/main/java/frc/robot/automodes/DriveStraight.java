@@ -20,6 +20,7 @@ public class DriveStraight extends AutonMode {
         driveDistance(.5, -.2, (800));
         driveDistance(1.2, -.6, (7510));
 
+        //This is all random
         if (DriveTrain.isConnected()) {
             // Some random commands
             turnToAngle(1, 60, 30, .5);

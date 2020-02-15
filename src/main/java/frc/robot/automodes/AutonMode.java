@@ -14,6 +14,8 @@ public abstract class AutonMode {
         run();
     }
 
+
+    //Creates auton commands
     protected abstract void run();
 
     protected void driveDistance(double seconds, double power, double distance) {

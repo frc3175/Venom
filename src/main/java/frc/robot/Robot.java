@@ -28,6 +28,7 @@ public class Robot extends TimedRobot{
   @Override
   public void robotInit() {
 
+    //gets the instance of the subsystems
     DriveTrain.getInstance();
     TeleOp.getInstance();
     Intake.getInstance();
@@ -35,6 +36,7 @@ public class Robot extends TimedRobot{
     Diagnostics.getInstance();
     LEDs.getInstance();
 
+    //Auton Choosers
     autoChooser = new SendableChooser<AutonMode>();
     autoChooser.setDefaultOption("Test Auton", new DriveStraight());
     autoChooser.addOption("Three Ball Auto", new ThreeBall());
@@ -46,12 +48,13 @@ public class Robot extends TimedRobot{
 
   @Override
   public void autonomousInit() {
-		autoChooser.getSelected().start();
+		autoChooser.getSelected().start(); // Auton init
   }
 
 
   @Override
   public void autonomousPeriodic() {
+    //Periodic encoders
     SmartDashboard.putNumber("Drive Train", DriveTrain.getEncoderAverage());
 		SmartDashboard.putNumber("AUTO GYRO", DriveTrain.getAngle());
   }
@@ -64,11 +67,13 @@ public class Robot extends TimedRobot{
 
   @Override
   public void teleopPeriodic() {
+    //Continues teleop
     TeleOp.run();
   }
 
   @Override
   public void disabledPeriodic(){
+    //Leds normal
     LEDs.setShooterLEDsNormal();
   }
 }

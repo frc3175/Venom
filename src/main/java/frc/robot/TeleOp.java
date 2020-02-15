@@ -11,6 +11,8 @@ import frc.robot.utilities.Utils;
 
 @SuppressWarnings("unused")
 public class TeleOp {
+
+    //Creates objects
     private static XBoxController manip;
     private static XBoxController driver;
     private static TeleOp instance;
@@ -18,17 +20,20 @@ public class TeleOp {
 
     
 
+    //Creates an instance
     public static TeleOp getInstance() {
         if (instance == null)
             instance = new TeleOp();
         return instance;
     }
 
+    //Constructor (Run's Once)
     private TeleOp() {
         driver = new XBoxController(Constants.XBOX_DRIVER);
         manip = new XBoxController(Constants.XBOX_MANIP);
     }
 
+    //Init function (Run Once as well (In RobotInit()))
     public static void init() {
 
         clock = new Timer();
@@ -65,6 +70,7 @@ public class TeleOp {
 
     }
 
+    // Run Method (Looped every 20 milliseconds)
     public static void run() {
         /**
          * ===============================================================================
@@ -79,28 +85,31 @@ public class TeleOp {
         double linearSpeed = Utils.deadband(driver.getRawAxis(1), Constants.driveDeadband);
         double curveSpeed = Utils.deadband(-driver.getRawAxis(4), Constants.driveDeadband);
 
-        if (driver.getLeftBumper()) {
-            Limelight.changePipeline(1);
+        
 
-            if (Limelight.hasValidTargets()) {
+        if (driver.getLeftBumper()) { // If the left bumper is pressed
+            Limelight.changePipeline(1); // changes Limelight vision pipeline to 1
+
+            if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (driver.getLeftBumper()) {
+                    driver.setLeftRumble(0.8); //Rumbles left side
+                    driver.setRightRumble(0.8); //Rumbles right Side
 
+                    //If Limelight X cross hair is set X distance away
                     if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
                         DriveTrain.arcadeDrive(0, 0.2);
                     } else {
-                        Limelight.dumbLineup();
+                        Limelight.dumbLineup(120); //Limelight lineup
                     }
                 } else {
-                    if (DriveTrain.ispidEnabled()) {
-                        DriveTrain.pidDisable();
+                    if (DriveTrain.ispidEnabled()) { 
+                        DriveTrain.pidDisable(); // Turn off pid
                     }
-                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper());
-                    //DriveTrain.arcadeDrive(Utils.expoDeadzone(-driver.getLeftStickXAxis(), 0.1, 2), Utils.expoDeadzone(-driver.getRightStickYAxis(), 0.1, 1.2));
-                    
+                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
                 }
 
             } else {
-                driver.setLeftRumble(0.0);
+                driver.setLeftRumble(0.0); //Turn off rumbles
                 driver.setRightRumble(0.0);
             }
         } else {
@@ -114,8 +123,8 @@ public class TeleOp {
          * ===============================================================================
          */
 
-        if (manip.getRightBumper()) {
-            DriveTrain.safeTurnLeft();
+        if (manip.getRightBumper()) { //if right bumper is pressed
+            DriveTrain.safeTurnLeft(); //turn left
         }
 
         // Intake with agitator
@@ -124,17 +133,18 @@ public class TeleOp {
          *     Intake Control
          * ======================
          */
-        if (manip.getYButton()) {
-            Intake.intakeCell(Constants.INTAKE_SPEED);
-            if (agitator.get() < 1) {
-                Shooter.hopperAgitationCommand(1);
-            } else if (agitator.get() < 3) {
-                Shooter.hopperAgitationCommand(2);
+        if (manip.getYButton()) { // if Y button is pressed
+            Intake.intakeCell(Constants.INTAKE_SPEED); //Move intake
+            if (agitator.get() < 1) { // if Agitate clock is less than 1 second
+                Shooter.hopperAgitationCommand(1); //Move forward direction
+            } else if (agitator.get() < 3) { // if agitator clock is less than 3 seconds
+                Shooter.hopperAgitationCommand(2); // move in reverse direction
             } else {
-                agitator.reset();
+                agitator.reset(); //Reset clock to 0 seconds
             }
         } else {
-            Intake.intakeCell(0);
+            Intake.intakeCell(0); //Set intake speed to 0
+            Shooter.hopperAgitationCommand(0); //Turn off hopper agitator
         }
 
         /**
@@ -143,9 +153,9 @@ public class TeleOp {
         * =====================
         */
         if (manip.getXButton()) {
-            Intake.IntakeUp();
+            Intake.IntakeUp(); // Intake up
         } else if (manip.getAButton()) {
-            Intake.IntakeDown();
+            Intake.IntakeDown(); // Intake down
         }
 
         /**
@@ -154,11 +164,11 @@ public class TeleOp {
         * =====================
         */
         if (manip.getBButton()) {
-            LEDs.setShooterLEDsFast();
-            Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED);
+            LEDs.setShooterLEDsFast(); // Make leds go fast
+            Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED, Constants.HOPPER_SPEED); //Shoot balls w/ hopper
         } else {
-            LEDs.setShooterLEDsNormal();
-            Shooter.shoot(0, 0);
+            LEDs.setShooterLEDsNormal(); // Leds normal
+            Shooter.shoot(0, 0, 0); // Shooter off hopper off
         }
         
         /**
@@ -168,6 +178,9 @@ public class TeleOp {
         */
         if(manip.getStartButton()) {
             Climber.fold(3000); // fold to setpoint
+        }
+        if(manip.getBackButton()) {
+            Climber.climb(0.6); // Climber Speed
         }
     }
 }

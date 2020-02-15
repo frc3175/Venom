@@ -26,12 +26,12 @@ public class Constants {
      * =====================
      */
     public static final int LIMELIGHT_VISION_TARGET = 1;
-    public static final int LIMELIGHT_LINEUP_LINE_FRONT = 2;
-    public static final int LIMELIGHT_LINEUP_LINE_MIDDLE = 3;
-    public static final int LIMELIGHT_LINEUP_LINE_BACK = 4;
 
-    public static final double CAMERA_ANGLE = 15.0;
-    public static final double CAMERA_HEIGHT = 15.0;
+
+    //values
+    public static final double CAMERA_ANGLE = 22.4; //degrees
+    public static final double CAMERA_HEIGHT = 23; //inches
+    public static final double LIMELIGHT_LINE_DISTANCE = 120d; //inches
 
     public static final double LINEUP_FULL_SPEED = 1.0;
     public static final double LINEUP_HALF_SPEED = 0.5;
@@ -42,8 +42,8 @@ public class Constants {
      *       Intake
      * =====================
      */
-    public static final int INTAKE_TALON = 1;
-    public static final double INTAKE_SPEED = 0.8;
+    public static final int INTAKE_TALON = 19;
+    public static final double INTAKE_SPEED = -0.8;
 
     //intake DoubleSolenoid
     public static final int INTAKE_SOLENOID_F = 0;
@@ -56,15 +56,23 @@ public class Constants {
      */
 
     //Shooter and Hopper
-    public static final int TOP_SHOOTER_TALON = 2;
-    public static final int BOTTOM_SHOOTER_TALON = 3;
-    public static final int HOPPER_TALON = 4;
+    public static final int TOP_SHOOTER_TALON = 14;
+    public static final int BOTTOM_SHOOTER_TALON = 15;
+    public static final int HOPPER_TALON = 16;
     public static final int HOPPER_SPEED = 1;
     public static final double HOPPER_AGITATION_FORWARD = 1;
     public static final double HOPPER_AGITATION_REVERSE = -0.49;
     public static final double TOP_MOTOR_SPEED_LINE = 0.7;
     public static final double BOTTOM_MOTOR_SPEED = 1;
     public static final double TOP_MOTOR_SPEED_TRENCH = 0.8;
+
+        /**
+     * =====================
+     * Game piece measurements
+     * =====================
+     */
+
+     public static final int POWERPORT_HEIGHT = 88; //inches
 
     
     /**
