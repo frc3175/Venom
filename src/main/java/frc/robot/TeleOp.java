@@ -92,8 +92,8 @@ public class TeleOp {
 
             if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (driver.getLeftBumper()) {
-                    driver.setLeftRumble(0.8); //Rumbles left side
-                    driver.setRightRumble(0.8); //Rumbles right Side
+                    driver.setLeftRumble(0.8); //Rumbles left side of driver controller
+                    driver.setRightRumble(0.8); //Rumbles right Side of driver controller
 
                     //If Limelight X cross hair is set X distance away
                     if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
@@ -123,28 +123,44 @@ public class TeleOp {
          * ===============================================================================
          */
 
-        if (manip.getRightBumper()) { //if right bumper is pressed
-            DriveTrain.safeTurnLeft(); //turn left
-        }
-
         // Intake with agitator
         /**
          * ======================
          *     Intake Control
          * ======================
          */
-        if (manip.getYButton()) { // if Y button is pressed
-            Intake.intakeCell(Constants.INTAKE_SPEED); //Move intake
-            if (agitator.get() < 1) { // if Agitate clock is less than 1 second
-                Shooter.hopperAgitationCommand(1); //Move forward direction
-            } else if (agitator.get() < 3) { // if agitator clock is less than 3 seconds
-                Shooter.hopperAgitationCommand(2); // move in reverse direction
+        if(manip.getBButton() == false) {
+            if (manip.getYButton()) { // if Y button is pressed
+                Intake.intakeCell(Constants.INTAKE_SPEED); //Move intake
+                if (agitator.get() < 1) { // if Agitate clock is less than 1 second
+                    Shooter.hopperPower(Constants.HOPPER_AGITATION_REVERSE); //Move forward direction
+                } else if (agitator.get() < 3) { // if agitator clock is less than 3 seconds
+                    Shooter.hopperPower(Constants.HOPPER_AGITATION_FORWARD); // move in reverse direction
+                } else {
+                    agitator.reset(); //Reset clock to 0 seconds
+                }
             } else {
-                agitator.reset(); //Reset clock to 0 seconds
+                Intake.intakeCell(0); //Set intake speed to 0
+                Shooter.hopperPower(0); //Turn off hopper agitator
             }
-        } else {
-            Intake.intakeCell(0); //Set intake speed to 0
-            Shooter.hopperAgitationCommand(0); //Turn off hopper agitator
+        }
+
+        /**
+        * =====================
+        *        Shooter
+        * =====================
+        */
+
+        if(manip.getYButton() == false) {
+            if (manip.getBButton()) {
+                Shooter.hopperPower(Constants.HOPPER_SPEED);
+                LEDs.setShooterLEDsFast(); // Make leds go fast
+                Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED); //Shoot balls
+            } else {
+                LEDs.setShooterLEDsNormal(); // Leds normal
+                Shooter.shoot(0, 0); // Shooter off
+                Shooter.hopperPower(0d);
+            }
         }
 
         /**
@@ -157,30 +173,20 @@ public class TeleOp {
         } else if (manip.getAButton()) {
             Intake.IntakeDown(); // Intake down
         }
-
-        /**
-        * =====================
-        *        Shooter
-        * =====================
-        */
-        if (manip.getBButton()) {
-            LEDs.setShooterLEDsFast(); // Make leds go fast
-            Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED, Constants.HOPPER_SPEED); //Shoot balls w/ hopper
-        } else {
-            LEDs.setShooterLEDsNormal(); // Leds normal
-            Shooter.shoot(0, 0, 0); // Shooter off hopper off
-        }
         
         /**
         * =====================
         *        Climber
         * =====================
         */
-        if(manip.getStartButton()) {
+        if(manip.getRightBumper()) {
             Climber.fold(3000); // fold to setpoint
         }
-        if(manip.getBackButton()) {
-            Climber.climb(0.6); // Climber Speed
+    
+        if (manip.getLeftBumper()){
+            Climber.climb(0.5); // Climber Speed
+        } else {
+            Climber.climb(0); // turn it off
         }
     }
 }

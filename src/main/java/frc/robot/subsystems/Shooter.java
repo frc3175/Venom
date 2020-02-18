@@ -39,29 +39,16 @@ public class Shooter{
      * @param bottomMotorPower Bottom motor power
      * @param hopperSpeed hopper speed
      */
-    public static void shoot(double topMotorPower, double bottomMotorPower, double hopperSpeed){
+    public static void shoot(double topMotorPower, double bottomMotorPower){
         topShooterTalon.set(ControlMode.PercentOutput, topMotorPower);
         bottomShooterTalon.set(ControlMode.PercentOutput, bottomMotorPower);
-        hopperTalon.set(ControlMode.PercentOutput,  hopperSpeed);
 
     }
 
-    /**
-     * 
-     * @param direction 1 == Forward 2 == Reverse
-     */
-    public static void hopperAgitationCommand(int direction) {
-        //Forward
-        if(direction == 1) {
-            hopperTalon.set(ControlMode.PercentOutput, Constants.HOPPER_AGITATION_FORWARD);
-        //Reverse
-        } else if (direction == 2) {
-            hopperTalon.set(ControlMode.PercentOutput, Constants.HOPPER_AGITATION_REVERSE);
-        } else if(direction == 0) {
-            //Shut off
-            hopperTalon.set(ControlMode.PercentOutput, 0);
-        }
+    public static void hopperPower(double power) {
+        hopperTalon.set(ControlMode.PercentOutput, power);
     }
+
 
     //Stops everything
     public static void stop() {

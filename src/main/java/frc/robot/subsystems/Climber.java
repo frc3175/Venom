@@ -25,7 +25,6 @@ public class Climber{
     private static CANPIDController pid;
     private static CANEncoder encoder;
 
-    
 
     /**
      * 
@@ -87,7 +86,7 @@ public class Climber{
      */
     public static void climb(double climbSpeed){
         leftClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
-        rightClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
+        rightClimbTalon.set(ControlMode.PercentOutput, -climbSpeed);
     }
 
     /**

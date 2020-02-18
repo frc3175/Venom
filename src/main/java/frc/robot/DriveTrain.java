@@ -188,10 +188,6 @@ public class DriveTrain implements PIDOutput {
         return gyro.getAngle();
     }
 
-    public static void safeTurnLeft() {
-        leftMotorFront.set(ControlMode.PercentOutput, 0.2);
-    }
-
     public static double getEncoderDistanceRight() {
         return rightMotorFront.getSelectedSensorPosition();
     }

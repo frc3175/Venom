@@ -15,6 +15,7 @@ import frc.robot.automodes.AutonMode;
 import frc.robot.automodes.DriveStraight;
 import frc.robot.automodes.SixBall;
 import frc.robot.automodes.ThreeBall;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot{
     //gets the instance of the subsystems
     DriveTrain.getInstance();
     TeleOp.getInstance();
+    Climber.getInstance();
     Intake.getInstance();
     Shooter.getInstance();
     Diagnostics.getInstance();

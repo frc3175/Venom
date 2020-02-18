@@ -19,13 +19,13 @@ public class ShootBall extends AutoCommandBase {
 
 	@Override
 	protected void run() {
-        Shooter.shoot(topMotorPower, 1, Constants.HOPPER_SPEED);
+        Shooter.shoot(topMotorPower, 1);
 
     }
 
 	@Override
 	public void end() {
-        Shooter.shoot(0, 0, 0);
+        Shooter.shoot(0, 0);
         
 	}
 

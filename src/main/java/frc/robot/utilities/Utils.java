@@ -50,7 +50,9 @@ public class Utils {
 		return ((Constants.POWERPORT_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(degToRad(Constants.CAMERA_ANGLE) + degToRad(ty))));
 	}
 
-
+	public static double climberEncoderCalculator() {
+		return ((Math.PI/2) * (7 * 2048));
+	}
 
 	public static double degToRad(double deg){
 		return deg*Math.PI/180.0;
