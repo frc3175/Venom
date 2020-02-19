@@ -169,5 +169,17 @@ public class TeleOp {
         if(manip.getStartButton()) {
             Climber.fold(3000); // fold to setpoint
         }
+
+        /**
+        * =====================
+        *         LEDs
+        * =====================
+        */
+        if(manip.getAButton()) {
+            LEDs.setShooterLEDsFast();
+        }
+
+
+        
     }
 }

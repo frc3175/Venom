@@ -38,6 +38,7 @@ public class LEDs {
     public static void setShooterLEDsFast(){
         shooterLEDs.set(true);
     }
+    
     public static void setShooterLEDsNormal() {
         shooterLEDs.set(false);
     }
