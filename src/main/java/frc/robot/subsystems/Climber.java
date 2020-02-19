@@ -25,8 +25,11 @@ public class Climber{
     private static CANPIDController pid;
     private static CANEncoder encoder;
 
-    
 
+    /**
+     * 
+     * @return Climber instance
+     */
     public static Climber getInstance(){
         if(instance == null){
             instance = new Climber();
@@ -34,6 +37,7 @@ public class Climber{
         return instance;
     }
 
+    //initializes climber motors
     public Climber(){
         leftClimbTalon = new TalonFX(Constants.LEFT_CLIMBER_TALON);
         rightClimbTalon = new TalonFX(Constants.RIGHT_CLIMBER_TALON);
@@ -49,7 +53,7 @@ public class Climber{
         encoder = rightNeo.getEncoder();
 
 
-            // PID coefficients
+        // PID coefficients
         double kP = 6e-5;
         double kI = 0;
         double kD = 0; 
@@ -58,6 +62,7 @@ public class Climber{
         double kMaxOutput = 1; 
         double kMinOutput = -1;
 
+        //sets pid coefficients
         pid.setP(kP);
         pid.setI(kI);
         pid.setD(kD);
@@ -75,21 +80,24 @@ public class Climber{
         SmartDashboard.putNumber("Min Output", kMinOutput);
 
     }
-
     /**
      * 
      * @param climbSpeed Speed at which the TalonFXs rotate
      */
     public static void climb(double climbSpeed){
         leftClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
-        rightClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
+        rightClimbTalon.set(ControlMode.PercentOutput, -climbSpeed);
     }
 
+    /**
+     * 
+     * @param setPoint Folding setpoint
+     */
     public static void fold(double setPoint){
         pid.setReference(setPoint, ControlType.kVelocity);
     }
 
-    //Diagnostic Information
+    //Diagnostic Information pushed to diagnositic subsystem
     public static boolean isLeftClimberTalonAlive(){
         return (leftClimbTalon.getBusVoltage() != 0.0);
     }

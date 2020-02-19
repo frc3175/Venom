@@ -27,8 +27,7 @@ public class DriveWithIntake extends AutoCommandBase{
 		else
             DriveTrain.stop();
             Intake.intakeCell(0);
-		
-	}
+		}
 
 	@Override
 	public void end() {

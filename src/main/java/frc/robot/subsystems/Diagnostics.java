@@ -14,6 +14,10 @@ public class Diagnostics{
     private static SmartDashboard tuningDashboard;
     private static PowerDistributionPanel pdp;
 
+    /**
+     * 
+     * @return Diagnostic instance
+     */
     public static Diagnostics getInstance(){
         if(instance == null){
             instance = new Diagnostics();
@@ -22,6 +26,7 @@ public class Diagnostics{
         return instance;
     }
 
+    // creates a diagnostic table
     public Diagnostics(){
         inst = NetworkTableInstance.getDefault();
         diagnosticTable = inst.getTable("datatable");
@@ -30,6 +35,9 @@ public class Diagnostics{
 
     }
 
+    /**
+     * Drive train Diagnostics are pushed to SmartDashboard
+     */
     public static void pushDriveTrainDiagnostics(){
         pushDouble("dtRightFrontTemp", DriveTrain.getRightMotorFrontTemp());
         pushDouble("dtRightBackTemp", DriveTrain.getRightMotorBackTemp());

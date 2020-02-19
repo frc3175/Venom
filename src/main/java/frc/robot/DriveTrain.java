@@ -23,7 +23,7 @@ public class DriveTrain implements PIDOutput {
 
     private static double m_quickStopAccumulator;
 
-
+    //Gets instance and creates it if it is Null
     public static DriveTrain getInstance() {
         if (instance == null) {
             instance = new DriveTrain();
@@ -33,9 +33,10 @@ public class DriveTrain implements PIDOutput {
         return instance;
     }
 
+    //Constructor that is run once
     public DriveTrain() {
 
-        // Right SPARK Motors
+        // Drive train motors
         rightMotorFront = new WPI_TalonFX(Constants.DT_TALON_RIGHTFRONT);
         rightMotorBack = new WPI_TalonFX(Constants.DT_TALON_RIGHTBACK);
 
@@ -55,10 +56,17 @@ public class DriveTrain implements PIDOutput {
 
     }
 
+    /**
+     * 
+     * @return gyro angle
+     */
     public static double getAngle() {
         return gyro.getAngle();
     }
 
+    /**
+     * @return Resets gyro Yaw and Angle
+     */
     public static void resetGyro() {
         gyro.reset();
     }
@@ -67,20 +75,26 @@ public class DriveTrain implements PIDOutput {
         gyropid.disable();
     }
 
+    //Tank Drive used for limelight lineup
     public static void drive(double powerLeft, double powerRight) {
         leftMotorFront.set(powerLeft);
         rightMotorFront.set(powerRight);
     }
 
+    /**
+     * @return gyro is connected
+     */
     public static boolean isConnected() {
         return gyro.isConnected();
     }
 
+    //Arcade drive used for auton
     public static void arcadeDrive(double fwd, double tur) {
         // Arcade Drive
         drive(Utils.ensureRange(fwd + tur, -1d, 1d), Utils.ensureRange(fwd - tur, -1d, 1d));
     }
 
+    //Drive straight method used for auton
     public static void driveStraight(double power) {
         if (power > 0) {
             if (getAngle() > Constants.DRIVE_STRAIGHT_CONSTANT)
@@ -97,7 +111,6 @@ public class DriveTrain implements PIDOutput {
             else
                 drive(power, power);
         }
-
     }
 
     /**
@@ -109,6 +122,7 @@ public class DriveTrain implements PIDOutput {
      * @param isQuickTurn If set, overrides constant-curvature turning for
      *                    turn-in-place maneuvers.
      */
+    //Curvature Code that you can copy and paste for next year
     @SuppressWarnings({ "ParameterName", "PMD.CyclomaticComplexity" })
     public static void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn) {
 
@@ -174,10 +188,6 @@ public class DriveTrain implements PIDOutput {
         return gyro.getAngle();
     }
 
-    public static void safeTurnLeft() {
-        leftMotorFront.set(ControlMode.PercentOutput, 0.2);
-    }
-
     public static double getEncoderDistanceRight() {
         return rightMotorFront.getSelectedSensorPosition();
     }
@@ -224,7 +234,6 @@ public class DriveTrain implements PIDOutput {
 
     @Override
     public void pidWrite(double output) {
-        // TODO Auto-generated method stub
         if (Math.abs(gyropid.getError()) < 5d) {
             gyropid.setPID(gyropid.getP(), .001, 0);
         } else {
@@ -256,7 +265,7 @@ public class DriveTrain implements PIDOutput {
 
     }
 
-    // Diagnostics
+    // Diagnostics Used in the diagnostic subsystem
     public static double getRightMotorFrontTemp() {
         return rightMotorFront.getTemperature();
     }

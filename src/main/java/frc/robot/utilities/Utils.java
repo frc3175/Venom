@@ -19,6 +19,12 @@ public class Utils {
 		}	
 	}
 
+	/**
+	 * 
+	 * @param val Joystick axis
+	 * @param threshold Actual deadband value
+	 * @return joystick axis
+	 */
 	public static double deadband(double val, double threshold) {
         if (Math.abs(val) < threshold) {
             return 0;
@@ -29,10 +35,25 @@ public class Utils {
 	public static double addAngle(double ang1, double ang2){
 		return Math.acos(Math.cos(ang1)*Math.cos(ang2));
 	}
-	public static double distFrom(double tx, double ty){
-		return Constants.CAMERA_HEIGHT*Math.tan(addAngle(tx,Math.min(ty+Constants.CAMERA_ANGLE,1.57)));
 
+	//This one doesnt work too well
+	public static double distFrom(double tx, double ty){
+		return Constants.CAMERA_HEIGHT*Math.tan(addAngle(tx, (ty+Constants.CAMERA_ANGLE)));
 	}
+
+	/**
+	 * 
+	 * @param ty Ty value of the limelight
+	 * @return distance from the target
+	 */
+	public static double distanceCalulator(double ty) {
+		return ((Constants.POWERPORT_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(degToRad(Constants.CAMERA_ANGLE) + degToRad(ty))));
+	}
+
+	public static double climberEncoderCalculator() {
+		return ((Math.PI/2) * (7 * 2048));
+	}
+
 	public static double degToRad(double deg){
 		return deg*Math.PI/180.0;
 	}

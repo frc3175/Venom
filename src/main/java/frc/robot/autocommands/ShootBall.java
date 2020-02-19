@@ -1,5 +1,6 @@
 package frc.robot.autocommands;
 
+import frc.robot.config.Constants;
 import frc.robot.subsystems.Shooter;
 
 
@@ -13,7 +14,6 @@ public class ShootBall extends AutoCommandBase {
 		this.topMotorPower = topMotorPower;
 	}
 
-	
 	public void init() {
 	}
 

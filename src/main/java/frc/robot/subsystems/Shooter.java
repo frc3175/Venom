@@ -15,6 +15,10 @@ public class Shooter{
 
     
 
+    /**
+     * 
+     * @return Shooter instance
+     */
     public static Shooter getInstance(){
         if(instance == null){
             instance = new Shooter();
@@ -22,44 +26,37 @@ public class Shooter{
         return instance;
     }
 
+    //initializes the motors
     public Shooter(){
-        topShooterTalon = new TalonSRX(Constants.TOP_SHOOTER_TALON); // 2 
-        bottomShooterTalon = new TalonSRX(Constants.BOTTOM_SHOOTER_TALON); //3
-        hopperTalon = new TalonSRX(Constants.HOPPER_TALON); // ID 4
-
-    }
-
-    public static void shoot(double topMotorPower, double bottomMotorPower){
-        topShooterTalon.set(ControlMode.PercentOutput, topMotorPower);
-        bottomShooterTalon.set(ControlMode.PercentOutput, bottomMotorPower);
-        hopperTalon.set(ControlMode.PercentOutput, Constants.HOPPER_SPEED);
-
+        topShooterTalon = new TalonSRX(Constants.TOP_SHOOTER_TALON); 
+        bottomShooterTalon = new TalonSRX(Constants.BOTTOM_SHOOTER_TALON); 
+        hopperTalon = new TalonSRX(Constants.HOPPER_TALON); 
     }
 
     /**
      * 
-     * @param direction 1 == Forward 2 == Reverse
+     * @param topMotorPower Top motor power
+     * @param bottomMotorPower Bottom motor power
+     * @param hopperSpeed hopper speed
      */
-    public static void hopperAgitationCommand(int direction) {
-        //Forward
-        if(direction == 1) {
-            hopperTalon.set(ControlMode.PercentOutput, Constants.HOPPER_AGITATION_FORWARD);
-        //Reverse
-        } else if (direction == 2) {
-            hopperTalon.set(ControlMode.PercentOutput, Constants.HOPPER_AGITATION_REVERSE);
-        } else {
-            //Shut off
-            hopperTalon.set(ControlMode.PercentOutput, 0);
-        }
+    public static void shoot(double topMotorPower, double bottomMotorPower){
+        topShooterTalon.set(ControlMode.PercentOutput, topMotorPower);
+        bottomShooterTalon.set(ControlMode.PercentOutput, bottomMotorPower);
+
     }
 
+    public static void hopperPower(double power) {
+        hopperTalon.set(ControlMode.PercentOutput, power);
+    }
+
+
+    //Stops everything
     public static void stop() {
         topShooterTalon.set(ControlMode.PercentOutput, 0);
         bottomShooterTalon.set(ControlMode.PercentOutput, 0);
-        hopperTalon.set(ControlMode.PercentOutput, 0);
     }
 
-    //Diagnostic Information
+    //Diagnostic Information used in diagnostics subsystem
     public static boolean isTopShooterAlive(){
         return (topShooterTalon.getBusVoltage() != 0.0);
     }

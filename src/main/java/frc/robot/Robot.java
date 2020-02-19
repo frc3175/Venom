@@ -15,6 +15,7 @@ import frc.robot.automodes.AutonMode;
 import frc.robot.automodes.DriveStraight;
 import frc.robot.automodes.SixBall;
 import frc.robot.automodes.ThreeBall;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -28,13 +29,16 @@ public class Robot extends TimedRobot{
   @Override
   public void robotInit() {
 
+    //gets the instance of the subsystems
     DriveTrain.getInstance();
     TeleOp.getInstance();
+    Climber.getInstance();
     Intake.getInstance();
     Shooter.getInstance();
     Diagnostics.getInstance();
     LEDs.getInstance();
 
+    //Auton Choosers
     autoChooser = new SendableChooser<AutonMode>();
     autoChooser.setDefaultOption("Test Auton", new DriveStraight());
     autoChooser.addOption("Three Ball Auto", new ThreeBall());
@@ -46,12 +50,13 @@ public class Robot extends TimedRobot{
 
   @Override
   public void autonomousInit() {
-		autoChooser.getSelected().start();
+		autoChooser.getSelected().start(); // Auton init
   }
 
 
   @Override
   public void autonomousPeriodic() {
+    //Periodic encoders
     SmartDashboard.putNumber("Drive Train", DriveTrain.getEncoderAverage());
 		SmartDashboard.putNumber("AUTO GYRO", DriveTrain.getAngle());
   }
@@ -64,11 +69,13 @@ public class Robot extends TimedRobot{
 
   @Override
   public void teleopPeriodic() {
+    //Continues teleop
     TeleOp.run();
   }
 
   @Override
   public void disabledPeriodic(){
+    //Leds normal
     LEDs.setShooterLEDsNormal();
   }
 }
