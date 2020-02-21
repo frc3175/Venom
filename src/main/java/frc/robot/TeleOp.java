@@ -190,6 +190,18 @@ public class TeleOp {
         if(manip.getRightBumper()) {
             Climber.fold(3000); // fold to setpoint
         }
+
+        /**
+        * =====================
+        *         LEDs
+        * =====================
+        */
+        if(manip.getAButton()) {
+            LEDs.setShooterLEDsFast();
+        }
+
+
+        
     
         if (manip.getLeftBumper()){
             Climber.climb(0.5); // Climber Speed
