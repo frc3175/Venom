@@ -67,22 +67,15 @@ public class Limelight {
 
 	public static void dumbLineup(double distance) {
 		Limelight.testFeed();
-		double x = Math.abs(Limelight.getX()) - 5; // this is like the "error" term
+		double x = Math.abs(Limelight.getX()) - 2; // this is like the "error" term
 		double power = x * 0.03;
 		if (Limelight.getX() >= 5d || Limelight.getX() <= -5d) {
 			if (Limelight.getX() > 5) {
 				// System.out.println("Should Be Moving Right");
 				DriveTrain.arcadeDrive(-power, 0);
-				if (Limelight.getX() < 5) {
-					goToDistance(distance); // go to distance
-				}
 			}
 		} else if (Limelight.getX() < -5) {
-			// System.out.println("Should Be Moving Left");
 			DriveTrain.arcadeDrive(power, 0);
-			if (Limelight.getX() > -5) {
-				goToDistance(distance); // go to distance
-			}
 		}
 	}
 

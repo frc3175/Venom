@@ -3,6 +3,7 @@ package frc.robot.autocommands;
 import frc.robot.DriveTrain;
 import frc.robot.config.Constants;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class DriveWithIntake extends AutoCommandBase{
 	private double power, distance;
@@ -22,11 +23,12 @@ public class DriveWithIntake extends AutoCommandBase{
 	protected void run() {
 		if(Math.abs(DriveTrain.getEncoderAverage()) < Math.abs(distance)){
             DriveTrain.driveStraight(power);
-            Intake.intakeCell(Constants.INTAKE_SPEED);
+			Intake.intakePowerCell(Constants.INTAKE_SPEED);
+			Shooter.hopperPower(Constants.HOPPER_AGITATION_REVERSE);
 		}
 		else
             DriveTrain.stop();
-            Intake.intakeCell(0);
+            Intake.intakePowerCell(0);
 		}
 
 	@Override

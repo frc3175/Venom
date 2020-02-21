@@ -40,8 +40,8 @@ public class Robot extends TimedRobot{
 
     //Auton Choosers
     autoChooser = new SendableChooser<AutonMode>();
-    autoChooser.setDefaultOption("Test Auton", new DriveStraight());
-    autoChooser.addOption("Three Ball Auto", new ThreeBall());
+    autoChooser.setDefaultOption("Three Ball Auto", new ThreeBall());
+    autoChooser.addOption("Test Auton", new DriveStraight());
     autoChooser.addOption("Six Ball Auto", new SixBall());
 
     SmartDashboard.putData("Auto mode", autoChooser);

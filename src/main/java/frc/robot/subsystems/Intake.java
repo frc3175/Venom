@@ -35,7 +35,7 @@ public class Intake{
     }
 
     //Sucks balls in
-    public static void intakeCell(double power){
+    public static void intakePowerCell(double power){
         cellIntakeTalon.set(ControlMode.PercentOutput, -power);
         intakeFollower.set(ControlMode.PercentOutput, -power);
     }
@@ -66,4 +66,5 @@ public class Intake{
     public static double getTempCellIntake(){
         return cellIntakeTalon.getTemperature();
     }
+
 }

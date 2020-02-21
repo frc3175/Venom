@@ -139,7 +139,7 @@ public class DriveTrain implements PIDOutput {
                         + Constants.kDefaultQuickStopAlpha * MathUtil.clamp(zRotation, -1.0, 1.0) * 2;
             }
             overPower = true;
-            angularPower = zRotation;
+            angularPower = zRotation * 0.7;
         } else {
             overPower = false;
             angularPower = Math.abs(xSpeed) * zRotation - m_quickStopAccumulator;

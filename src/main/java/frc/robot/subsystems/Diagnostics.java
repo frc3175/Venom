@@ -59,7 +59,27 @@ public class Diagnostics{
         pushDouble("CellIntakeTemp", Intake.getTempCellIntake());
     }
 
-    //TODO: Write Shooter Diagonistic tools And Climber
+    public static void pushShooterDiagnostics() {
+        diagnosticTable.getEntry("TopMotorAlive").setBoolean(Shooter.isTopShooterAlive());
+        diagnosticTable.getEntry("BottomMotorAlive").setBoolean(Shooter.isBottomShooterAlive());
+        diagnosticTable.getEntry("HopperAlive").setBoolean(Shooter.isHopperAlive());
+
+        pushDouble("topMotorTemp", Shooter.getTempTopTalon());
+        pushDouble("bottomMotorTemp", Shooter.getTempBottomTalon());
+        pushDouble("HopperTemp", Shooter.getTempHopperTalon());
+    }
+
+    public static void pushClimberDiagnostics() {
+        diagnosticTable.getEntry("LeftClimber").setBoolean(Climber.isLeftClimberTalonAlive());
+        diagnosticTable.getEntry("RightClimber").setBoolean(Climber.isRightClimberTalonAlive());
+        diagnosticTable.getEntry("LeftNeo").setBoolean(Climber.isLeftNeoAlive());
+        diagnosticTable.getEntry("RightNeo").setBoolean(Climber.isRightNeoAlive());
+
+        pushDouble("LeftClimberTemp", Climber.getTempLeftTalon());
+        pushDouble("RightClimberTemp", Climber.getTempRightTalon());
+        pushDouble("LeftNeoTemp", Climber.getTempLeftNeo());
+        pushDouble("RightNeoTemp", Climber.getTempRightNeo());
+    }
 
     public static void pushDouble(String name, double value){
         diagnosticTable.getEntry(name).setDouble(value);

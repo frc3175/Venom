@@ -19,6 +19,7 @@ public class Constants {
     public static final double kDefaultQuickStopThreshold = 0.2;
     public static final double kDefaultQuickStopAlpha = 0.1;
     public static final double driveDeadband = 0.2;
+    public static final double turnDeadband = 0.1;
 
     /**
      * =====================

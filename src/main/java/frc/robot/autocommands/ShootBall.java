@@ -1,6 +1,5 @@
 package frc.robot.autocommands;
 
-import frc.robot.config.Constants;
 import frc.robot.subsystems.Shooter;
 
 
