@@ -50,7 +50,8 @@ public class Robot extends TimedRobot{
 
   @Override
   public void autonomousInit() {
-		autoChooser.getSelected().start(); // Auton init
+    autoChooser.getSelected().start(); // Auton init
+    DriveTrain.resetGyro();
   }
 
 

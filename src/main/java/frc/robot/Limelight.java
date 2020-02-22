@@ -65,17 +65,16 @@ public class Limelight {
 		}
 	}
 
-	public static void dumbLineup(double distance) {
+	public static void dumbLineup() {
 		Limelight.testFeed();
-		double x = Math.abs(Limelight.getX()) - 2; // this is like the "error" term
+		double x = Math.abs(Limelight.getX()); // this is like the "error" term
 		double power = x * 0.03;
-		if (Limelight.getX() >= 5d || Limelight.getX() <= -5d) {
-			if (Limelight.getX() > 5) {
-				// System.out.println("Should Be Moving Right");
-				DriveTrain.arcadeDrive(-power, 0);
-			}
-		} else if (Limelight.getX() < -5) {
-			DriveTrain.arcadeDrive(power, 0);
+		if (Limelight.getX() > 0d) {
+			// System.out.println("Should Be Moving Right");
+			DriveTrain.drive(-power, 0);
+		} 
+		if (Limelight.getX() < -0d) {
+			DriveTrain.drive(0, power);
 		}
 	}
 
@@ -100,7 +99,7 @@ public class Limelight {
 	public static void dock() {
 		double distance = Utils.distFrom(Utils.degToRad(Limelight.getX()), Utils.degToRad(Limelight.getY()));
 		System.out.println(distance);
-		Limelight.dumbLineup(120);
+		Limelight.dumbLineup();
 		DriveTrain.arcadeDrive(0.3, 0);
 		// Limelight.lineUp();
 		if (distance >= 34000) {

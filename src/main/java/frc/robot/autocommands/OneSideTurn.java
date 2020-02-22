@@ -23,7 +23,6 @@ public class OneSideTurn extends AutoCommandBase {
 
 	@Override
 	public void end() {
-		DriveTrain.stop();
 	}
 
 	@Override

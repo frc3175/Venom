@@ -1,7 +1,7 @@
 #include <FastLED.h>
 
 // How many leds in your strip?
-#define NUM_LEDS 46
+#define NUM_LEDS 25 // actual 46
 #define NUM_SHOOTER_LEDS 20
 #define NUM_CLIMBER_LEDS 20
 
@@ -15,21 +15,22 @@ int foundTarget = 32;
 int flashbang = 34;
 
 // Define the array of leds
-
+CRGB leds[NUM_LEDS];
+CRGB leds1[NUM_LEDS];
 // shooterLEDs
 CRGB shooterleds[NUM_SHOOTER_LEDS];
-
-CRGB leds[NUM_LEDS];
 //Climer LEDS
 CRGB climberleds[NUM_CLIMBER_LEDS];
 
 void setup()
 {
-  
-  LEDS.addLeds<WS2812B, SHOOTER_DATA_PIN, GRB>(shooterleds, NUM_SHOOTER_LEDS);
+  LEDS.addLeds<WS2812B, DATA_PIN, GRB>(leds, 0, NUM_LEDS);
   LEDS.setBrightness(50);
   
-  LEDS.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+  LEDS.addLeds<WS2812B, DATA_PIN, GRB>(leds1, 23, NUM_LEDS);
+  LEDS.setBrightness(50);
+
+  LEDS.addLeds<WS2812B, SHOOTER_DATA_PIN, GRB>(shooterleds, NUM_SHOOTER_LEDS);
   LEDS.setBrightness(50);
   
   LEDS.addLeds<WS2812B, CLIMBER_DATA_PIN, GRB>(climberleds, NUM_CLIMBER_LEDS);
@@ -44,6 +45,14 @@ void fadeall()
   for (int i = 0; i < NUM_LEDS; i++)
   {
     leds[i].nscale8(250);
+  }
+}
+
+void fadeall1()
+{
+  for (int i = 0; i < NUM_LEDS; i++)
+  {
+    leds1[i].nscale8(250);
   }
 }
 
@@ -68,34 +77,45 @@ void fadeallclimber()
 void loop()
 {
 
-  int LEDMode = digitalRead(shooterLEDMode);
-  int targetFound = digitalRead(foundTarget);
+
+  for(int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::Red;
+    leds1[i] = CRGB::Red;
+    shooterleds[i] = CRGB::Blue;
+    climberleds[i] = CRGB::Blue;
+    FastLED.show();
+    fadeall();
+    fadeall1();
+    fadeallshooter();
+    fadeallclimber();
+    delay(10);
+  }
+
+    for(int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::Blue;
+    leds1[i] = CRGB::Blue;
+    shooterleds[i] = CRGB::Red;
+    climberleds[i] = CRGB::Red;
+    FastLED.show();
+    fadeall();
+    fadeall1();
+    fadeallshooter();
+    fadeallclimber();
+    delay(10);
+  }
+
+    for(int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::Purple;
+    leds1[i] = CRGB::Purple;
+    shooterleds[i] = CRGB::Purple;
+    climberleds[i] = CRGB::Green;
+    FastLED.show();
+    fadeall();
+    fadeall1();
+    fadeallshooter();
+    fadeallclimber();
+    delay(10);
+  }
 
 
-
- // First slide the led in one direction
-int i = 0;
-int j = 0;
-int k = 0;
-while(true) {
-leds[i] = CRGB::Red;
-shooterleds[j] = CRGB::Blue;
-climberleds[k] = CRGB::Blue;
-//Show the LEDs
-FastLED.show();
-fadeall();
-i++;
-j++;
-k++;
-if (i >= NUM_LEDS) {
-i= 0;
-}
-if (j >= NUM_SHOOTER_LEDS) {
-j= 0;
-}
-if (k >= NUM_CLIMBER_LEDS) {
-k= 0;
-}
-delay(10);
-}
 }

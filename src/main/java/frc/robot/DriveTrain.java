@@ -98,18 +98,18 @@ public class DriveTrain implements PIDOutput {
     public static void driveStraight(double power) {
         if (power > 0) {
             if (getAngle() > Constants.DRIVE_STRAIGHT_CONSTANT)
-                drive(power * .80, power * 1.15);
+                drive(power * .80, -power * 1.15);
             else if (getAngle() < -Constants.DRIVE_STRAIGHT_CONSTANT)
-                drive(power * 1.15, power * .85);
+                drive(power * 1.15, -power * .85);
             else
-                drive(power, power);
+                drive(power, -power);
         } else {
             if (getAngle() > Constants.DRIVE_STRAIGHT_CONSTANT)
-                drive(power * 1.15, power * .85);
+                drive(power * 1.15, -power * .85);
             else if (getAngle() < -Constants.DRIVE_STRAIGHT_CONSTANT)
-                drive(power * .8, power * 1.15);
+                drive(power * .8, -power * 1.15);
             else
-                drive(power, power);
+                drive(power, -power);
         }
     }
 
@@ -180,8 +180,8 @@ public class DriveTrain implements PIDOutput {
             rightMotorOutput /= maxMagnitude;
         }
 
-        leftMotorFront.set(leftMotorOutput * 1);
-        rightMotorFront.set(rightMotorOutput * 1 * -1);
+        leftMotorFront.set(ControlMode.PercentOutput, leftMotorOutput * 1);
+        rightMotorFront.set(ControlMode.PercentOutput, rightMotorOutput * 1 * -1);
     }
 
     public static double getAHRS() {
@@ -210,10 +210,10 @@ public class DriveTrain implements PIDOutput {
     }
 
     public static double getEncoderAverage() {
-        if (getEncoderDistanceLeft() > getEncoderDistanceRight()) {
-            return getEncoderDistanceRight();
+        if (Math.abs(getEncoderDistanceLeft()) > Math.abs(getEncoderDistanceRight())) {
+            return Math.abs(getEncoderDistanceRight());
         } else
-            return getEncoderDistanceRight();
+            return Math.abs(getEncoderDistanceRight());
     }
 
     public static void turnToAngle(double angle) {

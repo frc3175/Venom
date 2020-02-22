@@ -19,16 +19,15 @@ public class DriveDistance extends AutoCommandBase{
 	@Override
 	protected void run() {
 		if(Math.abs(DriveTrain.getEncoderAverage()) < Math.abs(distance)){
-			DriveTrain.driveStraight(power);
+			DriveTrain.drive(power, -power);
+		} else {
+			DriveTrain.drive(0, 0);
 		}
-		else
-			DriveTrain.stop();
-		
 	}
 
 	@Override
 	public void end() {
-		DriveTrain.stop();
+		//DriveTrain.stop();
 		DriveTrain.resetGyro();
 		DriveTrain.resetEncoder();
 	}

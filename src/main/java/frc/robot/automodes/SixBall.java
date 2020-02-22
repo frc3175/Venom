@@ -30,7 +30,7 @@ public class SixBall extends AutonMode {
             if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
                 DriveTrain.arcadeDrive(0, 0.2);
             } else {
-                Limelight.dumbLineup(120); //Limelight lineup
+                Limelight.dumbLineup(); //Limelight lineup
             }
             shootBall(3, Constants.TOP_MOTOR_SPEED_TRENCH); //Shoots ball at trench speed
         } else { 
@@ -42,7 +42,7 @@ public class SixBall extends AutonMode {
             if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
                 DriveTrain.arcadeDrive(0, 0.2);
             } else {
-                Limelight.dumbLineup(120); //Limelight lineup
+                Limelight.dumbLineup(); //Limelight lineup
             }
             shootBall(3, Constants.TOP_MOTOR_SPEED_TRENCH);
         }

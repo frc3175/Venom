@@ -27,13 +27,13 @@ public class DriveWithIntake extends AutoCommandBase{
 			Shooter.hopperPower(Constants.HOPPER_AGITATION_REVERSE);
 		}
 		else
-            DriveTrain.stop();
+            //DriveTrain.stop();
             Intake.intakePowerCell(0);
 		}
 
 	@Override
 	public void end() {
-		DriveTrain.stop();
+		//DriveTrain.stop();
 		DriveTrain.resetGyro();
         DriveTrain.resetEncoder();
 	}

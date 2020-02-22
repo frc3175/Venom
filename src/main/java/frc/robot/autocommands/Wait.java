@@ -16,7 +16,6 @@ public class Wait extends AutoCommandBase {
 
 	@Override
 	protected void run() {
-		DriveTrain.stop();
 	}
 
 	@Override

@@ -61,14 +61,14 @@ public class Constants {
     public static final int TOP_SHOOTER_TALON = 14;
     public static final int BOTTOM_SHOOTER_TALON = 15;
     public static final int HOPPER_TALON = 16;
-    public static final int HOPPER_SPEED = -1;
+    public static final double HOPPER_SPEED = -0.8; //85
     public static final double HOPPER_AGITATION_FORWARD = 1;
     public static final double HOPPER_AGITATION_REVERSE = -0.6;
-    public static final double TOP_MOTOR_SPEED_LINE = 0.7;
-    public static final double BOTTOM_MOTOR_SPEED = 1;
-    public static final double TOP_MOTOR_SPEED_TRENCH = 0.8;
+    public static final double TOP_MOTOR_SPEED_LINE = 0.7; //current
+    public static final double BOTTOM_MOTOR_SPEED = 1; //percent
+    public static final double TOP_MOTOR_SPEED_TRENCH = 0.69; // current
 
-        /**
+    /**
      * =====================
      * Game piece measurements
      * =====================
@@ -87,6 +87,7 @@ public class Constants {
     public static final int RIGHT_CLIMBER_TALON = 6;
     public static final int LEFT_NEO = 17;
     public static final int RIGHT_NEO = 18;
+    public static final double CLIMBER_SPEED = 1;
 
     /**
      * =====================
@@ -96,15 +97,6 @@ public class Constants {
     // TeleOp
     public static final int XB_POS_DRIVER = 0;
     public static final int XB_POS_MANIP = 1;
-
-    public static final double kP = 0.1;
-    public static final double kI = 1e-4;
-    public static final double kD = 1;
-    public static final double kFF = 0;
-    public static final double kMaxOutput = 1.0;
-    public static final double kMinOutput = -1.0;
-
-
 
 
     public static final double MAX_RPM_FIRST_GEAR = 4700d;
