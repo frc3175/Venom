@@ -41,15 +41,6 @@ public class Utils {
 		return Constants.CAMERA_HEIGHT*Math.tan(addAngle(tx, (ty+Constants.CAMERA_ANGLE)));
 	}
 
-	/**
-	 * 
-	 * @param ty Ty value of the limelight
-	 * @return distance from the target
-	 */
-	public static double distanceCalulator(double ty) {
-		return ((Constants.POWERPORT_HEIGHT - Constants.CAMERA_HEIGHT) / (Math.tan(degToRad(Constants.CAMERA_ANGLE) + degToRad(ty))));
-	}
-
 	public static double climberEncoderCalculator() {
 		return ((Math.PI/2) * (7 * 2048));
 	}

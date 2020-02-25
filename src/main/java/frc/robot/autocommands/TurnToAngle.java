@@ -7,14 +7,12 @@ public class TurnToAngle extends AutoCommandBase {
 	
 	private double angle = 0;
 	private double power;
-	private double angleOffSet;
 	
 	
-	public TurnToAngle(double timeOut, double angle, double angleOffSet, double power) {
+	public TurnToAngle(double timeOut, double angle, double power) {
 		super(timeOut);
 		this.angle = angle;
 		this.power = power;
-		this.angleOffSet = angleOffSet;
 	}
 
 	
@@ -24,17 +22,12 @@ public class TurnToAngle extends AutoCommandBase {
 
 	@Override
 	protected void run() {
-		if(DriveTrain.getAngle() > 0){
-			if(DriveTrain.getAngle() < (angle - angleOffSet))
-				DriveTrain.arcadeDrive(0, power);
-			else if(DriveTrain.getAngle() < angle && DriveTrain.getAngle() > angle - angleOffSet)
-				DriveTrain.arcadeDrive(0, .15);
-		}
-		else{
-			if(DriveTrain.getAngle() > (angle + angleOffSet))
-				DriveTrain.arcadeDrive(0, -power);
-			else if(DriveTrain.getAngle() > angle && DriveTrain.getAngle() < angle + angleOffSet)
-				DriveTrain.arcadeDrive(0, -.15);
+		if (DriveTrain.getAngle() < angle && (Math.abs(DriveTrain.getAngle() - angle) > 2)) { // 2 is the range 
+			DriveTrain.drive(power, power); // should turn left
+		} else if (DriveTrain.getAngle() > angle && (Math.abs(DriveTrain.getAngle() - angle) > 2)) { // range
+			DriveTrain.drive(-power, -power); // should turn right
+		} else {
+			DriveTrain.drive(0, 0);
 		}
 	}
 

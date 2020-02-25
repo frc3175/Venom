@@ -66,6 +66,7 @@ public class Robot extends TimedRobot{
 	public void teleopInit(){
     //Starts Teleop 
     TeleOp.init();
+
 	}
 
   @Override

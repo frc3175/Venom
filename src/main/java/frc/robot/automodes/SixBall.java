@@ -21,30 +21,13 @@ public class SixBall extends AutonMode {
          */
 
          //Shoot Ball then drive back
-        shootBall(3, Constants.TOP_MOTOR_SPEED_LINE);
-        // DriveTrain.isConnected() is used to determine if the gyro is connected
-        if (DriveTrain.isConnected()) {
-            turnToAngle(1, 120, 0, 0.5); // turns 120 degrees for 1 second at 0.5 power
-            driveWithIntake(3, 0.7, 3000); //Drives with the intake on for 3000 rotations
-            turnToAngle(1, 180, 0, 0.5); // turns 180 degrees at half power
-            if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
-                DriveTrain.arcadeDrive(0, 0.2);
-            } else {
-                Limelight.dumbLineup(); //Limelight lineup
-            }
-            shootBall(3, Constants.TOP_MOTOR_SPEED_TRENCH); //Shoots ball at trench speed
-        } else { 
-            //timed based turn instead of gyro turn
-            // Dumb stuff
-            doubleSidePower(1, 0.5, -0.5);
-            driveWithIntake(3, 0.7, 3000);
-            doubleSidePower(2, 0.8, -0.8);
-            if (Limelight.getX() <= 6d && Limelight.getX() >= -6d) {
-                DriveTrain.arcadeDrive(0, 0.2);
-            } else {
-                Limelight.dumbLineup(); //Limelight lineup
-            }
-            shootBall(3, Constants.TOP_MOTOR_SPEED_TRENCH);
-        }
+        shootBall(2, 0, Constants.HOPPER_SPEED);
+        turnToAngle(1, 270, 0, 0.5);
+        driveDistance(2, 0.6, 40000);
+        turnToAngle(1, 180, 0, 0.5);
+        driveWithIntake(2.5, 0.3, 30000);
+        turnToAngle(1, 0, 0, 0.5);
+        shootBall(3, 1, Constants.HOPPER_SPEED);
+
     }
 }

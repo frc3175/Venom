@@ -72,13 +72,9 @@ public class Diagnostics{
     public static void pushClimberDiagnostics() {
         diagnosticTable.getEntry("LeftClimber").setBoolean(Climber.isLeftClimberTalonAlive());
         diagnosticTable.getEntry("RightClimber").setBoolean(Climber.isRightClimberTalonAlive());
-        diagnosticTable.getEntry("LeftNeo").setBoolean(Climber.isLeftNeoAlive());
-        diagnosticTable.getEntry("RightNeo").setBoolean(Climber.isRightNeoAlive());
 
         pushDouble("LeftClimberTemp", Climber.getTempLeftTalon());
         pushDouble("RightClimberTemp", Climber.getTempRightTalon());
-        pushDouble("LeftNeoTemp", Climber.getTempLeftNeo());
-        pushDouble("RightNeoTemp", Climber.getTempRightNeo());
     }
 
     public static void pushDouble(String name, double value){

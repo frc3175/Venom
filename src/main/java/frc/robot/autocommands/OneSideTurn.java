@@ -3,12 +3,13 @@ package frc.robot.autocommands;
 import frc.robot.DriveTrain;
 
 public class OneSideTurn extends AutoCommandBase {
-	private double right, left;
+	private double right, left, distance;
 	
-	public OneSideTurn(double timeOut, double left, double right) {
+	public OneSideTurn(double timeOut, double left, double right, double distance) {
 		super(timeOut);
 		this.right = right;
 		this.left = left;
+		this.distance = distance;
 	}
 
 	@Override
@@ -18,8 +19,13 @@ public class OneSideTurn extends AutoCommandBase {
 
 	@Override
 	protected void run() {
-		DriveTrain.arcadeDrive(left, right);
+		if(Math.abs(DriveTrain.getEncoderDistanceRight()) < Math.abs(distance)){
+			DriveTrain.drive(left, -right);
+		} else {
+			DriveTrain.drive(0, 0);
+		}
 	}
+
 
 	@Override
 	public void end() {

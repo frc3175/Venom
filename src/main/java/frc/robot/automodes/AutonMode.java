@@ -23,19 +23,19 @@ public abstract class AutonMode {
     }
 
     protected void turnToAngle(double seconds, double angle, double offset, double power) {
-        runCommand(new TurnToAngle(seconds, angle, offset, power));
+        runCommand(new TurnToAngle(seconds, angle, power));
     }
 
-    protected void doubleSidePower(double seconds, double leftPower, double rightPower) {
-        runCommand(new OneSideTurn(seconds, leftPower, rightPower));
+    protected void doubleSidePower(double seconds, double leftPower, double rightPower, double distance) {
+        runCommand(new OneSideTurn(seconds, leftPower, rightPower, distance));
     }
 
     protected void waitTime(double seconds) {
         runCommand(new Wait(seconds));
     }
 
-    protected void shootBall(double seconds, double topMotorPower) {
-        runCommand(new ShootBall(seconds, topMotorPower));
+    protected void shootBall(double seconds, int RPMarray, double hopperPower) {
+        runCommand(new ShootBall(seconds, RPMarray, hopperPower));
     }
 
     protected void driveWithIntake(double seconds, double power, double distance) {

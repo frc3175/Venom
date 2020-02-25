@@ -22,7 +22,11 @@ public class DriveWithIntake extends AutoCommandBase{
 	@Override
 	protected void run() {
 		if(Math.abs(DriveTrain.getEncoderAverage()) < Math.abs(distance)){
-            DriveTrain.driveStraight(power);
+			if(Math.abs(DriveTrain.getEncoderAverage()) < Math.abs(distance)){
+				DriveTrain.drive(power, -power);
+			} else {
+				DriveTrain.drive(0, 0);
+			}
 			Intake.intakePowerCell(Constants.INTAKE_SPEED);
 			Shooter.hopperPower(Constants.HOPPER_AGITATION_REVERSE);
 		}

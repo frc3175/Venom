@@ -4,8 +4,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.config.Constants;
+import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.Utils;
 
 @SuppressWarnings("unused")
@@ -16,10 +17,25 @@ public class Limelight {
 	private static boolean m_LimelightHasValidTarget = false;
 	private static double m_LimelightDriveCommand = 0.0;
 	private static double m_LimelightSteerCommand = 0.0;
+    private static NetworkTableEntry ty = table.getEntry("ty");
+
+	private static double limelightY = ty.getDouble(0.0);
+
+	//TODO: Tune these
+	private static double[] distances = {120, 180}; // should be in Inches???
+    public static double[] RPMs = {3200, 3500};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);
 		double y = table.getEntry("ty").getDouble(0.0);
+	}
+
+	public static void forceLEDsOn() {
+		table.getEntry("ledMode").forceSetValue(3);
+	}
+
+	public static void forceLEDsOff() {
+		table.getEntry("ledMode").forceSetValue(1);
 	}
 
 	public static double getX() {
@@ -54,23 +70,11 @@ public class Limelight {
 		return table.getEntry("ty1").getDouble(0.0);
 	}
 
-	public static void lineUp() {
-		Limelight.testFeed();
-		double target = DriveTrain.getAHRS() + Limelight.getX();
-		DriveTrain.turnToAngle(target);
-		System.out.println("TARGET: " + target);
-		System.out.println("AHRS: " + DriveTrain.getAHRS());
-		if (!ds.isEnabled() || (Limelight.getX() >= 5d || Limelight.getX() <= -5d)) {
-			DriveTrain.pidDisable();
-		}
-	}
-
 	public static void dumbLineup() {
 		Limelight.testFeed();
-		double x = Math.abs(Limelight.getX()); // this is like the "error" term
+		double x = Math.abs(Limelight.getX()); 
 		double power = x * 0.03;
 		if (Limelight.getX() > 0d) {
-			// System.out.println("Should Be Moving Right");
 			DriveTrain.drive(-power, 0);
 		} 
 		if (Limelight.getX() < -0d) {
@@ -78,14 +82,13 @@ public class Limelight {
 		}
 	}
 
-	public static void goToDistance(double setDistanceInInches) {
-		double distance = Utils.distanceCalulator(Limelight.getY());
-		System.out.println(distance);
-
-		if (distance <= setDistanceInInches - 10) { // 10 acts as a range
-			DriveTrain.drive(-0.3, -0.3); // should go back if distance is short
-		} else if (distance >= setDistanceInInches + 10) { // 10 acts as a range
-			DriveTrain.drive(0.3, 0.3); // should drive forward
+	public static void goToDistance() {
+		double distance = distanceCalulator(Limelight.getY());
+		
+		if (distance <= findClosestDistance() - 5) { // 5 acts as a range
+			DriveTrain.drive(0.5, -0.5); // should go back if distance is short
+		} else if (distance >= findClosestDistance() + 5) { // 5 acts as a range
+			DriveTrain.drive(-0.5, 0.5); // should drive forward
 		} else {
 			DriveTrain.drive(0, 0);
 		}
@@ -95,25 +98,59 @@ public class Limelight {
 		NetworkTableEntry pipeline = table.getEntry("pipeline");
 		return pipeline.getDouble(-1);
 	}
+	
+	/**
+	 * 
+	 * @param ty Ty value of the limelight
+	 * @return distance from the target
+	 */
+	public static double distanceCalulator(double limelightTY) {
 
-	public static void dock() {
-		double distance = Utils.distFrom(Utils.degToRad(Limelight.getX()), Utils.degToRad(Limelight.getY()));
-		System.out.println(distance);
-		Limelight.dumbLineup();
-		DriveTrain.arcadeDrive(0.3, 0);
-		// Limelight.lineUp();
-		if (distance >= 34000) {
-			Limelight.changePipeline(1);
-		}
+        limelightY = ty.getDouble(0.0);
+        double targetAngle = limelightY;
+        SmartDashboard.putNumber("Limelight/Target Angle", targetAngle);
+        double limelightHeight = Constants.CAMERA_HEIGHT;
+        double targetHeight = Constants.POWERPORT_HEIGHT;
 
-		if (distance <= 33000) {
-			Limelight.changePipeline(1);
-			DriveTrain.drive(Constants.LINEUP_FULL_SPEED,
-					Constants.LINEUP_HALF_SPEED * Constants.DRIVE_STRAIGHT_CONSTANT);
-		} else {
-			DriveTrain.drive(Constants.LINEUP_FULL_SPEED,
-					Constants.LINEUP_FULL_SPEED * Constants.DRIVE_STRAIGHT_CONSTANT);
-		}
+        return ((targetHeight-limelightHeight)/(Math.tan((Constants.CAMERA_ANGLE + targetAngle) * Math.PI/180)));
 	}
 
+    public static void pushPeriodic() {
+		SmartDashboard.putNumber("Limelight Distance", distanceCalulator(Limelight.getY()));
+        SmartDashboard.putNumber("RPM Setpoint", findRPM());
+        Shooter.publishRPM();
+	}
+	
+	public static double findRPM() {
+        double myNumber = distanceCalulator(Limelight.getY());
+        double distance = Math.abs(distances[0] - myNumber);
+        int idx = 0;
+        for(int c = 1; c < distances.length; c++){
+            double cdistance = Math.abs(distances[c] - myNumber);
+            if(cdistance < distance){
+                idx = c;
+                distance = cdistance;
+            }
+        }
+
+        if(idx < distances.length && idx < RPMs.length){
+            return RPMs[idx];
+        } else {
+            return 0;
+        }
+	}
+
+	public static double findClosestDistance() {
+        double myNumber = distanceCalulator(Limelight.getY());
+        double distance = Math.abs(distances[0] - myNumber);
+        int idx = 0;
+        for(int c = 1; c < distances.length; c++){
+            double cdistance = Math.abs(distances[c] - myNumber);
+            if(cdistance < distance){
+                idx = c;
+                distance = cdistance;
+            }
+		}
+		return distances[idx];
+	}
 }

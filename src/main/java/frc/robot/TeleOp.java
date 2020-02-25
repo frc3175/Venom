@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.config.Constants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
@@ -19,6 +20,7 @@ public class TeleOp {
     private static TeleOp instance;
     private static Timer agitator, shooterDelay;
     private static Compressor compressor;
+    private static boolean state = true;
 
     // Creates an instance
     public static TeleOp getInstance() {
@@ -36,6 +38,11 @@ public class TeleOp {
 
     // Init function (Run Once (In RobotInit()))
     public static void init() {
+        
+        SmartDashboard.putNumber("kP", 0);
+        SmartDashboard.putNumber("kI", 0);
+        SmartDashboard.putNumber("kD", 0);
+    
 
         agitator = new Timer();
         shooterDelay = new Timer();
@@ -67,10 +74,16 @@ public class TeleOp {
         agitator.start();
         shooterDelay.start();
 
+        Intake.IntakeUp();
+
     }
 
     // Run Method (Looped every 20 milliseconds)
     public static void run() {
+
+        //Periodic stuff
+        Limelight.pushPeriodic();
+        Shooter.publishRPM();
 
         /**
          * ===============================================================================
@@ -80,7 +93,10 @@ public class TeleOp {
         compressor.setClosedLoopControl(true);
         long startTime = System.currentTimeMillis();
 
+
+
         Limelight.changePipeline(1);
+        
         // System.out.println("HAS VALID TARGETS: " + Limelight.hasValidTargets());
 
         double linearSpeed = Utils.deadband(driver.getRawAxis(1), Constants.driveDeadband);
@@ -88,16 +104,19 @@ public class TeleOp {
 
 
         /*
-        * =======================================
-        *    Limelight Controlled by Operator
-        * =======================================
+        * =====================================================
+        *    Limelight Controlled by Driver Rumbles Operator
+        * =====================================================
         */
-        if (manip.getLeftBumper()) { // If the left bumper is pressed
-            Limelight.changePipeline(1); // changes Limelight vision pipeline to 1
+        // if(!driver.getLeftBumper()) {
+        //     Limelight.forceLEDsOff();
+        // } else {
+        //     Limelight.forceLEDsOn();
+        // }
+
+        if (driver.getLeftBumper()) { // If the left bumper is pressed
             if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (manip.getLeftBumper()) {
-                        manip.setLeftRumble(0.6);
-                        manip.setRightRumble(0.6);
+                if (driver.getLeftBumper()) {
 						Limelight.dumbLineup();
                 } else {
                     if (DriveTrain.ispidEnabled()) {
@@ -106,13 +125,24 @@ public class TeleOp {
                     DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
                 }
             } else {
-                manip.setLeftRumble(0.0); // Turn off rumbles
-                manip.setRightRumble(0.0);
+            }
+        } else if (driver.getAButton()) {
+            if (Limelight.hasValidTargets()) { // If limelight sees a target
+                if (driver.getAButton()) {
+						Limelight.goToDistance();
+                } else {
+                    if (DriveTrain.ispidEnabled()) {
+                        DriveTrain.pidDisable(); // Turn off pid
+                    }
+                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
+                }
+            } else {
             }
         } else {
-            DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper());
+            DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
         }
 
+        //Go straight go reverse
         if(driver.getLeftTriggerAxis() > .5 || driver.getRightTriggerAxis() > 0.5) {
             DriveTrain.drive(driver.getLeftTriggerAxis() - 0.5, driver.getRightTriggerAxis() - 0.5);
         }
@@ -130,7 +160,7 @@ public class TeleOp {
          * ======================
          */
 
-        if (!manip.getXButton()) {
+        if (!state) {
             if (!manip.getBButton()) {
                 if (manip.getYButton()) { // if Y button is pressed
                     Intake.intakePowerCell(Constants.INTAKE_SPEED); // Move intake
@@ -150,29 +180,55 @@ public class TeleOp {
             }
         }
 
+        if(state) {
+            if(manip.getYButton()) {
+                if (agitator.get() < 1) { // For 1 second...
+                    Shooter.hopperPower(Constants.HOPPER_AGITATION_REVERSE); // Move forward direction
+                } else if (agitator.get() < 3) { // For 3 seconds...
+                    Shooter.hopperPower(Constants.HOPPER_AGITATION_FORWARD); // move in reverse direction
+                } else {
+                    agitator.reset(); // Reset timer to 0 seconds
+                }
+            }
+        }
+
         /**
          * ===================== 
          *       Shooter 
          * =====================
          */
 
+        // if (!manip.getYButton()) {
+        //     if (manip.getBButton()) {
+        //         compressor.setClosedLoopControl(false);
+        //         Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED); // Shoot balls
+        //         if (shooterDelay.get() < 1.5) {
+
+        //         } else if (shooterDelay.get() > 1.5) {
+        //             Shooter.hopperPower(Constants.HOPPER_SPEED);
+        //         } else if (shooterDelay.get() > 2) {
+        //             Shooter.hopperPower(0);
+        //         } else if (shooterDelay.get() > 4) {
+        //             Shooter.hopperPower(Constants.HOPPER_SPEED);
+        //         } 
+        //     } else {
+        //         Shooter.shoot(0, 0); // Shooter off
+        //         Shooter.hopperPower(0d);
+        //         shooterDelay.reset();
+        //     }
+        // }
+
+
         if (!manip.getYButton()) {
             if (manip.getBButton()) {
                 compressor.setClosedLoopControl(false);
-                Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED); // Shoot balls
-                if (shooterDelay.get() < 1.5) {
-
-                } else if (shooterDelay.get() > 1.5) {
+                Shooter.shoot(); // Shoot balls
+                if(Shooter.reachedRPM()) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
-                } else if (shooterDelay.get() > 2) {
-                    Shooter.hopperPower(0);
-                } else if (shooterDelay.get() > 4) {
-                    Shooter.hopperPower(Constants.HOPPER_SPEED);
-                } 
+                }
             } else {
-                Shooter.shoot(0, 0); // Shooter off
+                //Shooter.shoot(0); // Shooter off
                 Shooter.hopperPower(0d);
-                shooterDelay.reset();
             }
         }
 
@@ -181,10 +237,12 @@ public class TeleOp {
          *    Intake Piston 
          * =====================
          */
-        if (manip.getXButton()) {
+        if (manip.getLeftBumper()) {
             Intake.IntakeUp(); // Intake up
-        } else if (manip.getAButton()) {
+            state = true;
+        } else if (manip.getRightBumper()) {
             Intake.IntakeDown(); // Intake down
+            state = false;
         }
 
         /**
@@ -199,7 +257,7 @@ public class TeleOp {
         }
 
         if (manip.getLeftTriggerButton()) {
-            Climber.climb(0.5); // Climber Speed
+            Climber.climb(1); // Climber Speed
         } else {
             Climber.climb(0); // turn it off
         }

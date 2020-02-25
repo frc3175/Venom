@@ -41,12 +41,12 @@ public class Intake{
     }
     
     //Moves intake down
-    public static void IntakeDown(){
+    public static void IntakeUp(){
         intake.set(Value.kForward);
     }
 
     //Moves intake up
-    public static void IntakeUp(){
+    public static void IntakeDown(){
         intake.set(Value.kReverse);
     }
 

@@ -77,8 +77,8 @@ public class DriveTrain implements PIDOutput {
 
     //Tank Drive used for limelight lineup
     public static void drive(double powerLeft, double powerRight) {
-        leftMotorFront.set(powerLeft);
-        rightMotorFront.set(powerRight);
+        leftMotorFront.set(ControlMode.PercentOutput, powerLeft);
+        rightMotorFront.set(ControlMode.PercentOutput, powerRight);
     }
 
     /**
@@ -86,12 +86,6 @@ public class DriveTrain implements PIDOutput {
      */
     public static boolean isConnected() {
         return gyro.isConnected();
-    }
-
-    //Arcade drive used for auton
-    public static void arcadeDrive(double fwd, double tur) {
-        // Arcade Drive
-        drive(Utils.ensureRange(fwd + tur, -1d, 1d), Utils.ensureRange(fwd - tur, -1d, 1d));
     }
 
     //Drive straight method used for auton
@@ -240,10 +234,6 @@ public class DriveTrain implements PIDOutput {
             // I Zone
             gyropid.setPID(gyropid.getP(), 0, 0);
         }
-
-        // if(output != 0){
-        DriveTrain.arcadeDrive(output, 0);
-        // }
     }
 
     public static void pidDisable() {

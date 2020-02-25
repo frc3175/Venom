@@ -19,7 +19,7 @@ public class EightBall extends AutonMode {
          */
 
          //Shoot Ball then drive back
-        shootBall(3, Constants.TOP_MOTOR_SPEED_LINE);
+        shootBall(2, 0, Constants.HOPPER_SPEED);
         driveDistance(2,-.6, 800);
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.config;
 
+import frc.robot.Gains;
+
 public class Constants {
 
     /**
@@ -64,9 +66,9 @@ public class Constants {
     public static final double HOPPER_SPEED = -0.8; //85
     public static final double HOPPER_AGITATION_FORWARD = 1;
     public static final double HOPPER_AGITATION_REVERSE = -0.6;
-    public static final double TOP_MOTOR_SPEED_LINE = 0.7; //current
+    public static final double TOP_MOTOR_SPEED_LINE = 0.76; //percent
     public static final double BOTTOM_MOTOR_SPEED = 1; //percent
-    public static final double TOP_MOTOR_SPEED_TRENCH = 0.69; // current
+    public static final double TOP_MOTOR_SPEED_TRENCH = 0.65; // percent
 
     /**
      * =====================
@@ -111,4 +113,16 @@ public class Constants {
     public static final double LIMELIGHT_P = 0.001;
     public static final double LIMELIGHT_I = 0;
     public static final double LIMELIGHT_D = 0;
+
+    /**
+     * =========================
+     *       PID Constants
+     * =========================
+     */
+
+    public static final int kSlotIdx = 0;
+    public static final int kPIDLoopIdx = 0;
+    public static final int kTimeoutMs = 30;
+    public final static Gains kGains_Velocit = new Gains( 0.25, 0.001, 20, 1023.0/7200.0,  300,  1.00);
+
 }
