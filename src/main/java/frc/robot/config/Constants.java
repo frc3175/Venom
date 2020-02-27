@@ -62,8 +62,8 @@ public class Constants {
     public static final int TOP_SHOOTER_TALON = 14;
     public static final int BOTTOM_SHOOTER_TALON = 15;
     public static final int HOPPER_TALON = 16;
-    public static final double HOPPER_SPEED = -0.5; //85
-    public static final double HOPPER_AGITATION_FORWARD = 1;
+    public static final double HOPPER_SPEED = -0.4; //85
+    public static final double HOPPER_AGITATION_FORWARD = 0.6;
     public static final double HOPPER_AGITATION_REVERSE = -0.6;
     public static final double TOP_MOTOR_SPEED_LINE = 0.76; //percent
     public static final double BOTTOM_MOTOR_SPEED = 1; //percent

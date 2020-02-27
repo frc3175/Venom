@@ -17,8 +17,8 @@ public class ThreeBall extends AutonMode {
          * 
          * Drive Distance Params (Seconds, Power, Distance)
          */
-
-        shootBall(2, Constants.HOPPER_SPEED);
+        hopperSpin(1, Constants.HOPPER_AGITATION_FORWARD);
+        shootBall(7, Constants.HOPPER_SPEED);
         driveDistance(2, .6, 80000); // Drives 2 seconds at .6 power for 800 encoder rotations
     }
 }

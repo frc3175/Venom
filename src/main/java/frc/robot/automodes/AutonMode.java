@@ -3,6 +3,7 @@ package frc.robot.automodes;
 import frc.robot.autocommands.AutoCommandBase;
 import frc.robot.autocommands.DriveDistance;
 import frc.robot.autocommands.DriveWithIntake;
+import frc.robot.autocommands.HopperSpin;
 import frc.robot.autocommands.OneSideTurn;
 import frc.robot.autocommands.ShootBall;
 import frc.robot.autocommands.TurnToAngle;
@@ -36,6 +37,10 @@ public abstract class AutonMode {
 
     protected void shootBall(double seconds, double hopperPower) {
         runCommand(new ShootBall(seconds, hopperPower));
+    }
+
+    protected void hopperSpin(double seconds, double hopperPower) {
+        runCommand(new HopperSpin(seconds, hopperPower));
     }
 
     protected void driveWithIntake(double seconds, double power, double distance) {

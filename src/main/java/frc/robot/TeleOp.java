@@ -120,17 +120,18 @@ public class TeleOp {
                     }
                     DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
                 }
-            } else if (driver.getAButton()) {
-                if (Limelight.hasValidTargets()) { // If limelight sees a target
-                    if (driver.getAButton()) {
-                            Limelight.goToDistance();
-                    } else {
-                        if (DriveTrain.ispidEnabled()) {
-                            DriveTrain.pidDisable(); // Turn off pid
-                        }
-                        DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
-                    }
+            } else {
+            }
+        } else if (driver.getAButton()) {
+            if (Limelight.hasValidTargets()) { // If limelight sees a target
+                if (driver.getAButton()) {
+                        Limelight.goToDistance(true);
                 } else {
+                    Limelight.goToDistance(false);
+                    if (DriveTrain.ispidEnabled()) {
+                        DriveTrain.pidDisable(); // Turn off pid
+                    }
+                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
                 }
             } else {
             }
@@ -221,10 +222,10 @@ public class TeleOp {
                 Shooter.shoot(true); // Shoot balls
                 driver.setRightRumble(0.6);
                 driver.setLeftRumble(0.6);
-                    if (shooterDelay.get() < 1.5) {
-                } else if (shooterDelay.get() > 1.5) {
-                    Shooter.hopperPower(Constants.HOPPER_SPEED);
+                    if (shooterDelay.get() < 2) {
                 } else if (shooterDelay.get() > 2) {
+                    Shooter.hopperPower(Constants.HOPPER_SPEED);
+                } else if (shooterDelay.get() > 2.5) {
                     Shooter.hopperPower(0);
                 } else if (shooterDelay.get() > 4) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);

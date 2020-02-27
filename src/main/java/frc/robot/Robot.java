@@ -52,6 +52,7 @@ public class Robot extends TimedRobot{
   public void autonomousInit() {
     autoChooser.getSelected().start(); // Auton init
     DriveTrain.resetGyro();
+    Limelight.forceLEDsOn();
   }
 
 

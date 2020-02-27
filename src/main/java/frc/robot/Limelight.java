@@ -27,8 +27,8 @@ public class Limelight {
 	 * 2nd trench
 	 * 3rd behind trench (probably won't do this)
 	 */
-	private static double[] distances = {90, 120}; // should be in Inches???
-    public static double[] RPMs = {5500, 7000};
+	private static double[] distances = {70.5, 120}; // should be in Inches???
+    public static double[] RPMs = {5700, 7000};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);
@@ -78,7 +78,7 @@ public class Limelight {
 	public static void dumbLineup() {
 		Limelight.testFeed();
 		double x = Math.abs(Limelight.getX()); 
-		double power = x * 0.03;
+		double power = x * 0.08;
 		if (Limelight.getX() > 0d) {
 			DriveTrain.drive(-power, 0);
 		} 
@@ -87,13 +87,17 @@ public class Limelight {
 		}
 	}
 
-	public static void goToDistance() {
+	public static void goToDistance(boolean value) {
+		Limelight.testFeed();
 		double distance = distanceCalulator(Limelight.getY());
-		
-		if (distance <= findClosestDistance() - 5) { // 5 acts as a range
-			DriveTrain.drive(0.5, -0.5); // should go back if distance is short
-		} else if (distance >= findClosestDistance() + 5) { // 5 acts as a range
-			DriveTrain.drive(-0.5, 0.5); // should drive forward
+		double power = distance * 0.002;
+		System.out.println("Im going to " + findClosestDistance());
+		if(value) {
+			if (distance <= findClosestDistance() - 1.5d) { // 5 acts as a range
+				DriveTrain.drive(power, -power); // should go back if distance is short
+			} else if (distance >= findClosestDistance() + 1.5d) { // 5 acts as a range
+				DriveTrain.drive(-power, power); // should drive forward
+			}
 		} else {
 			DriveTrain.drive(0, 0);
 		}
