@@ -34,8 +34,8 @@ public abstract class AutonMode {
         runCommand(new Wait(seconds));
     }
 
-    protected void shootBall(double seconds, int RPMarray, double hopperPower) {
-        runCommand(new ShootBall(seconds, RPMarray, hopperPower));
+    protected void shootBall(double seconds, double hopperPower) {
+        runCommand(new ShootBall(seconds, hopperPower));
     }
 
     protected void driveWithIntake(double seconds, double power, double distance) {

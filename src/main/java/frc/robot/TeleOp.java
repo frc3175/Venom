@@ -120,6 +120,18 @@ public class TeleOp {
                     }
                     DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
                 }
+            } else if (driver.getAButton()) {
+                if (Limelight.hasValidTargets()) { // If limelight sees a target
+                    if (driver.getAButton()) {
+                            Limelight.goToDistance();
+                    } else {
+                        if (DriveTrain.ispidEnabled()) {
+                            DriveTrain.pidDisable(); // Turn off pid
+                        }
+                        DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
+                    }
+                } else {
+                }
             } else {
             }
         } else {

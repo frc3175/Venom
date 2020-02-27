@@ -21,13 +21,13 @@ public class SixBall extends AutonMode {
          */
 
          //Shoot Ball then drive back
-        shootBall(2, 0, Constants.HOPPER_SPEED);
+        shootBall(2, Constants.HOPPER_SPEED);
         turnToAngle(1, 270, 0, 0.5);
         driveDistance(2, 0.6, 40000);
         turnToAngle(1, 180, 0, 0.5);
         driveWithIntake(2.5, 0.3, 30000);
         turnToAngle(1, 0, 0, 0.5);
-        shootBall(3, 1, Constants.HOPPER_SPEED);
+        shootBall(3, Constants.HOPPER_SPEED);
 
     }
 }

@@ -22,7 +22,12 @@ public class Limelight {
 	private static double limelightY = ty.getDouble(0.0);
 
 	//TODO: Tune these
-	private static double[] distances = {120, 180}; // should be in Inches???
+	/**
+	 * 1st line
+	 * 2nd trench
+	 * 3rd behind trench (probably won't do this)
+	 */
+	private static double[] distances = {90, 120}; // should be in Inches???
     public static double[] RPMs = {5500, 7000};
 
 	public static void testFeed() {
