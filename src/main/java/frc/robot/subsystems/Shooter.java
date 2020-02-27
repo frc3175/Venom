@@ -50,23 +50,28 @@ public class Shooter{
         masterShooterTalon.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
         masterShooterTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
 
-        masterShooterTalon.enableCurrentLimit(true);
+        masterShooterTalon.enableCurrentLimit(false);
         masterShooterTalon.configPeakCurrentLimit(40);
         masterShooterTalon.configPeakCurrentDuration(0);
         masterShooterTalon.configContinuousCurrentLimit(30);
 
-        followerTalon.enableCurrentLimit(true);
+        followerTalon.enableCurrentLimit(false);
         followerTalon.configPeakCurrentLimit(40);
         followerTalon.configPeakCurrentDuration(0);
         followerTalon.configContinuousCurrentLimit(30);
 
         followerTalon.follow(masterShooterTalon);
 
+
     }
 
-    public static void shoot() {
-        double targetVelocity_UnitsPer100ms = Limelight.findRPM();
-        masterShooterTalon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+    public static void shoot(boolean pressed) {
+        if (pressed) {
+            double targetVelocity_UnitsPer100ms = Limelight.findRPM();
+            masterShooterTalon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        } else {
+            masterShooterTalon.set(ControlMode.Velocity, 0);
+            }
         }
     
 

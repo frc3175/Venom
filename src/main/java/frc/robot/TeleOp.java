@@ -102,34 +102,18 @@ public class TeleOp {
         double linearSpeed = Utils.deadband(driver.getRawAxis(1), Constants.driveDeadband);
         double curveSpeed = Utils.deadband(-driver.getRawAxis(4), Constants.turnDeadband);
 
-
+//342
         /*
         * =====================================================
         *    Limelight Controlled by Driver Rumbles Operator
         * =====================================================
         */
-        // if(!driver.getLeftBumper()) {
-        //     Limelight.forceLEDsOff();
-        // } else {
-        //     Limelight.forceLEDsOn();
-        // }
+        Limelight.forceLEDsOn();
 
         if (driver.getLeftBumper()) { // If the left bumper is pressed
             if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (driver.getLeftBumper()) {
 						Limelight.dumbLineup();
-                } else {
-                    if (DriveTrain.ispidEnabled()) {
-                        DriveTrain.pidDisable(); // Turn off pid
-                    }
-                    DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
-                }
-            } else {
-            }
-        } else if (driver.getAButton()) {
-            if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (driver.getAButton()) {
-						Limelight.goToDistance();
                 } else {
                     if (DriveTrain.ispidEnabled()) {
                         DriveTrain.pidDisable(); // Turn off pid
@@ -222,13 +206,22 @@ public class TeleOp {
         if (!manip.getYButton()) {
             if (manip.getBButton()) {
                 compressor.setClosedLoopControl(false);
-                Shooter.shoot(); // Shoot balls
-                if(Shooter.reachedRPM()) {
+                Shooter.shoot(true); // Shoot balls
+                    if (shooterDelay.get() < 1.5) {
+                } else if (shooterDelay.get() > 1.5) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
-                }
+                } else if (shooterDelay.get() > 2) {
+                    Shooter.hopperPower(0);
+                } else if (shooterDelay.get() > 4) {
+                    Shooter.hopperPower(Constants.HOPPER_SPEED);
+                } 
+                // if(Shooter.reachedRPM()) {
+                //     Shooter.hopperPower(Constants.HOPPER_SPEED);
+                // }
             } else {
-                //Shooter.shoot(0); // Shooter off
+                Shooter.shoot(false); // Shooter off
                 Shooter.hopperPower(0d);
+                shooterDelay.reset();
             }
         }
 

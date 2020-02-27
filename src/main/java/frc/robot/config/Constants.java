@@ -29,8 +29,7 @@ public class Constants {
      * =====================
      */
     public static final int LIMELIGHT_VISION_TARGET = 1;
-
-
+    public static final double LIMELIGHT_OFFSET = 30;// offset substract
     //values
     public static final double CAMERA_ANGLE = 22.4; //degrees
     public static final double CAMERA_HEIGHT = 23; //inches
@@ -47,7 +46,7 @@ public class Constants {
      */
     public static final int INTAKE_TALON = 19;
     public static final int INTAKE_FOLLOWER = 1;
-    public static final double INTAKE_SPEED = -1;
+    public static final double INTAKE_SPEED = -.8;
 
     //intake DoubleSolenoid
     public static final int INTAKE_SOLENOID_F = 0;
@@ -63,7 +62,7 @@ public class Constants {
     public static final int TOP_SHOOTER_TALON = 14;
     public static final int BOTTOM_SHOOTER_TALON = 15;
     public static final int HOPPER_TALON = 16;
-    public static final double HOPPER_SPEED = -0.8; //85
+    public static final double HOPPER_SPEED = -0.5; //85
     public static final double HOPPER_AGITATION_FORWARD = 1;
     public static final double HOPPER_AGITATION_REVERSE = -0.6;
     public static final double TOP_MOTOR_SPEED_LINE = 0.76; //percent
@@ -123,6 +122,6 @@ public class Constants {
     public static final int kSlotIdx = 0;
     public static final int kPIDLoopIdx = 0;
     public static final int kTimeoutMs = 30;
-    public final static Gains kGains_Velocit = new Gains( 0.25, 0.001, 20, 1023.0/7200.0,  300,  1.00);
+    public final static Gains kGains_Velocit = new Gains( 0.003, 0.000, 0, 1023.0/7200.0,  300,  1.00);
 
 }

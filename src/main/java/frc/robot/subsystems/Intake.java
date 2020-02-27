@@ -36,7 +36,7 @@ public class Intake{
 
     //Sucks balls in
     public static void intakePowerCell(double power){
-        cellIntakeTalon.set(ControlMode.PercentOutput, -power);
+        cellIntakeTalon.set(ControlMode.PercentOutput, power);
         intakeFollower.set(ControlMode.PercentOutput, -power);
     }
     

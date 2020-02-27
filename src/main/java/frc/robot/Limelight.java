@@ -23,7 +23,7 @@ public class Limelight {
 
 	//TODO: Tune these
 	private static double[] distances = {120, 180}; // should be in Inches???
-    public static double[] RPMs = {3200, 3500};
+    public static double[] RPMs = {5500, 7000};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);
@@ -112,7 +112,7 @@ public class Limelight {
         double limelightHeight = Constants.CAMERA_HEIGHT;
         double targetHeight = Constants.POWERPORT_HEIGHT;
 
-        return ((targetHeight-limelightHeight)/(Math.tan((Constants.CAMERA_ANGLE + targetAngle) * Math.PI/180)));
+        return ((targetHeight-limelightHeight)/(Math.tan((Constants.CAMERA_ANGLE + targetAngle) * Math.PI/180)) - Constants.LIMELIGHT_OFFSET);
 	}
 
     public static void pushPeriodic() {
@@ -125,7 +125,7 @@ public class Limelight {
         double myNumber = distanceCalulator(Limelight.getY());
         double distance = Math.abs(distances[0] - myNumber);
         int idx = 0;
-        for(int c = 1; c < distances.length; c++){
+        for(int c = 0; c < distances.length; c++){
             double cdistance = Math.abs(distances[c] - myNumber);
             if(cdistance < distance){
                 idx = c;
@@ -144,7 +144,7 @@ public class Limelight {
         double myNumber = distanceCalulator(Limelight.getY());
         double distance = Math.abs(distances[0] - myNumber);
         int idx = 0;
-        for(int c = 1; c < distances.length; c++){
+        for(int c = 0; c < distances.length; c++){
             double cdistance = Math.abs(distances[c] - myNumber);
             if(cdistance < distance){
                 idx = c;
