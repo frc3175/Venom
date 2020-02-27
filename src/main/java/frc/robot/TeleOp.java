@@ -219,6 +219,8 @@ public class TeleOp {
             if (manip.getBButton()) {
                 compressor.setClosedLoopControl(false);
                 Shooter.shoot(true); // Shoot balls
+                driver.setRightRumble(0.6);
+                driver.setLeftRumble(0.6);
                     if (shooterDelay.get() < 1.5) {
                 } else if (shooterDelay.get() > 1.5) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
@@ -231,6 +233,8 @@ public class TeleOp {
                 //     Shooter.hopperPower(Constants.HOPPER_SPEED);
                 // }
             } else {
+                driver.setRightRumble(0);
+                driver.setLeftRumble(0);
                 Shooter.shoot(false); // Shooter off
                 Shooter.hopperPower(0d);
                 shooterDelay.reset();
