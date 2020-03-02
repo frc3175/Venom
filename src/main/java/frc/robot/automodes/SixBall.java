@@ -21,12 +21,14 @@ public class SixBall extends AutonMode {
          */
 
          //Shoot Ball then drive back
-        shootBall(2, Constants.HOPPER_SPEED);
-        turnToAngle(1, 270, 0, 0.5);
-        driveDistance(2, 0.6, 40000);
-        turnToAngle(1, 180, 0, 0.5);
-        driveWithIntake(2.5, 0.3, 30000);
-        turnToAngle(1, 0, 0, 0.5);
+        hopperSpin(1, Constants.HOPPER_AGITATION_FORWARD);
+        shootBall(7, Constants.HOPPER_SPEED);
+        driveDistance(2, .6, 80000); // Drives 2 seconds at .6 power for 800 encoder rotations
+        leftsideTurn(1.5, 0.5, 0, 12000);
+        intakeDown(0.5);
+        driveWithIntake(1.5, 0.3, 15000);
+        doubleSidePower(1, 0, 0.5, 12000);
+        limelightAlign(1.5);
         shootBall(3, Constants.HOPPER_SPEED);
 
     }

@@ -86,8 +86,10 @@ public class Constants {
 
     public static final int LEFT_CLIMBER_TALON = 5;
     public static final int RIGHT_CLIMBER_TALON = 6;
-    public static final int LEFT_NEO = 17;
-    public static final int RIGHT_NEO = 18;
+    public static final int LEFT_FOLDER = 2;
+    public static final int RIGHT_FOLDER = 3;
+    public static final int UP_CLIMB_POSITION = 10000;
+    public static final int DOWN_CLIMB_POSITION = 20000;
     public static final double CLIMBER_SPEED = 1;
 
     /**
@@ -104,6 +106,8 @@ public class Constants {
 
     public static final int XBOX_DRIVER = 0;
     public static final int XBOX_MANIP = 1;
+    public static final int XBOX_CLIMB = 2;
+    public static final int XBOX_RESET = 3;
 
     public static final int LED_CHANNEL_1 = 1; // > 30
     public static final int LED_CHANNEL_2 = 2; // > 32

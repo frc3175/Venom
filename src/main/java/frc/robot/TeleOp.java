@@ -17,6 +17,8 @@ public class TeleOp {
     // Creates objects
     private static XBoxController manip;
     private static XBoxController driver;
+    private static XBoxController climber;
+    private static XBoxController reset;
     private static TeleOp instance;
     private static Timer agitator, shooterDelay;
     private static Compressor compressor;
@@ -33,6 +35,8 @@ public class TeleOp {
     private TeleOp() {
         driver = new XBoxController(Constants.XBOX_DRIVER);
         manip = new XBoxController(Constants.XBOX_MANIP);
+        climber = new XBoxController(Constants.XBOX_CLIMB);
+        reset = new XBoxController(Constants.XBOX_RESET);
         compressor = new Compressor(0);
     }
 
@@ -84,6 +88,7 @@ public class TeleOp {
         //Periodic stuff
         Limelight.pushPeriodic();
         Shooter.publishRPM();
+        Climber.pushClimberEncoderValue();
 
         /**
          * ===============================================================================
@@ -91,7 +96,6 @@ public class TeleOp {
          * ===============================================================================
          */
         compressor.setClosedLoopControl(true);
-        long startTime = System.currentTimeMillis();
 
 
 
@@ -113,7 +117,7 @@ public class TeleOp {
         if (driver.getLeftBumper()) { // If the left bumper is pressed
             if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (driver.getLeftBumper()) {
-						Limelight.dumbLineup();
+                        Limelight.dumbLineup();
                 } else {
                     if (DriveTrain.ispidEnabled()) {
                         DriveTrain.pidDisable(); // Turn off pid
@@ -195,27 +199,6 @@ public class TeleOp {
          * =====================
          */
 
-        // if (!manip.getYButton()) {
-        //     if (manip.getBButton()) {
-        //         compressor.setClosedLoopControl(false);
-        //         Shooter.shoot(Constants.TOP_MOTOR_SPEED_TRENCH, Constants.BOTTOM_MOTOR_SPEED); // Shoot balls
-        //         if (shooterDelay.get() < 1.5) {
-
-        //         } else if (shooterDelay.get() > 1.5) {
-        //             Shooter.hopperPower(Constants.HOPPER_SPEED);
-        //         } else if (shooterDelay.get() > 2) {
-        //             Shooter.hopperPower(0);
-        //         } else if (shooterDelay.get() > 4) {
-        //             Shooter.hopperPower(Constants.HOPPER_SPEED);
-        //         } 
-        //     } else {
-        //         Shooter.shoot(0, 0); // Shooter off
-        //         Shooter.hopperPower(0d);
-        //         shooterDelay.reset();
-        //     }
-        // }
-
-
         if (!manip.getYButton()) {
             if (manip.getBButton()) {
                 compressor.setClosedLoopControl(false);
@@ -230,9 +213,6 @@ public class TeleOp {
                 } else if (shooterDelay.get() > 4) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
                 } 
-                // if(Shooter.reachedRPM()) {
-                //     Shooter.hopperPower(Constants.HOPPER_SPEED);
-                // }
             } else {
                 driver.setRightRumble(0);
                 driver.setLeftRumble(0);
@@ -242,9 +222,15 @@ public class TeleOp {
             }
         }
 
+        // if(manip.getBackButton()) {
+        //     Shooter.passBall(true);
+        // } else {
+        //     Shooter.passBall(false);
+        // }
+
         /**
          * ===================== 
-         *    Intake Piston 
+         *    Intake Piston
          * =====================
          */
         if (manip.getLeftBumper()) {
@@ -260,16 +246,37 @@ public class TeleOp {
          *       Climber 
          * =====================
          */
-        if (manip.getRightTriggerButton()) {
-            Climber.foldSet(Constants.CLIMBER_SPEED); // fold
+
+        //run based on button pressed
+        if (climber.getLeftBumper()) {
+            Climber.runUpDownToPosition(Constants.UP_CLIMB_POSITION, Constants.CLIMBER_SPEED);
+        } else if (climber.getRightBumper()) {
+            Climber.runUpDownToPosition(Constants.DOWN_CLIMB_POSITION, Constants.CLIMBER_SPEED);
+        } else if (reset.getAButton()) {
+            Climber.reset(Constants.CLIMBER_SPEED / 4);
         } else {
-            Climber.foldSet(0);
+            Climber.climb(0.0);
+        }
+        //Folding - left climb
+        if (climber.getLeftStickYAxis() > 0.2) {
+            Climber.leftFoldSet(Constants.CLIMBER_SPEED);
+        } else if (climber.getLeftStickYAxis() < -0.2) {
+            Climber.leftFoldSet(-Constants.CLIMBER_SPEED);
+        } else {
+            Climber.leftFoldSet(0.0);
+        }
+        //Folding - right climb
+        if (climber.getRightStickYAxis() > 0.2) {
+            Climber.rightFoldSet(Constants.CLIMBER_SPEED);
+        } else if (climber.getRightStickYAxis() < -0.2) {
+            Climber.rightFoldSet(-Constants.CLIMBER_SPEED);
+        } else {
+            Climber.rightFoldSet(0.0);
         }
 
-        if (manip.getLeftTriggerButton()) {
-            Climber.climb(1); // Climber Speed
-        } else {
-            Climber.climb(0); // turn it off
+        //Single button fold
+        if(climber.getAButton()) {
+            Climber.foldSet(Constants.CLIMBER_SPEED);
         }
     }
 }

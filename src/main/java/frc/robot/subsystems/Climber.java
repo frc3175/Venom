@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
@@ -18,6 +20,7 @@ import frc.robot.config.Constants;
 public class Climber {
     private static Climber instance;
     private static TalonFX leftClimbTalon, rightClimbTalon;
+    private static VictorSPX leftFolder, rightFolder;
 
 
     /**
@@ -35,6 +38,9 @@ public class Climber {
     public Climber() {
         leftClimbTalon = new TalonFX(Constants.LEFT_CLIMBER_TALON);
         rightClimbTalon = new TalonFX(Constants.RIGHT_CLIMBER_TALON);
+        leftFolder = new VictorSPX(Constants.LEFT_FOLDER);
+        rightFolder = new VictorSPX(Constants.RIGHT_FOLDER);
+        
 
 
     }
@@ -48,11 +54,32 @@ public class Climber {
         rightClimbTalon.set(ControlMode.PercentOutput, -climbSpeed);
     }
 
+    public static void runUpDownToPosition(double position, double climbSpeed) {
+        if (position - leftClimbTalon.getSelectedSensorPosition() > 0) {
+            //TODO: add current climber encoder position to SmartDashboard
+            leftClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
+            rightClimbTalon.set(ControlMode.PercentOutput, -climbSpeed);
+        } else {
+            leftClimbTalon.set(ControlMode.PercentOutput, 0.0);
+            rightClimbTalon.set(ControlMode.PercentOutput, 0.0);
+        }
+    }
+
     /**
      * 
      * @param speed Folding speed
      */
     public static void foldSet(double speed) {
+        leftFolder.set(ControlMode.PercentOutput, speed);
+        rightFolder.set(ControlMode.PercentOutput,-speed);
+    }
+
+    public static void leftFoldSet(double speed) {
+        leftFolder.set(ControlMode.PercentOutput, speed);
+    }
+
+    public static void rightFoldSet(double speed) {
+        rightFolder.set(ControlMode.PercentOutput,-speed);
     }
 
     // Diagnostic Information pushed to diagnositic subsystem
@@ -71,6 +98,15 @@ public class Climber {
 
     public static double getTempRightTalon() {
         return rightClimbTalon.getTemperature();
+    }
+
+    public static void reset(double climbSpeed) {
+        leftClimbTalon.set(ControlMode.PercentOutput, -climbSpeed);
+        rightClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
+    }
+
+    public static void pushClimberEncoderValue() {
+        SmartDashboard.putNumber("leftClimbTalon", leftClimbTalon.getSelectedSensorPosition());
     }
 
 }

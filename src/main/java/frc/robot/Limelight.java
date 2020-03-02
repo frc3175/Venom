@@ -27,8 +27,8 @@ public class Limelight {
 	 * 2nd trench
 	 * 3rd behind trench (probably won't do this)
 	 */
-	private static double[] distances = {70.5, 120}; // should be in Inches???
-    public static double[] RPMs = {5700, 7000};
+	private static double[] distances = {70.5, 128}; // should be in Inches???
+    public static double[] RPMs = {5700, 5700};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);

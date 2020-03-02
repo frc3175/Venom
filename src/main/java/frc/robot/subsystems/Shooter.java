@@ -73,6 +73,7 @@ public class Shooter{
             masterShooterTalon.set(ControlMode.Velocity, 0);
             }
         }
+    
 
     public static boolean reachedRPM() {
         for(int i = 0; i < Limelight.RPMs.length; i++) {

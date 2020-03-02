@@ -4,7 +4,10 @@ import frc.robot.autocommands.AutoCommandBase;
 import frc.robot.autocommands.DriveDistance;
 import frc.robot.autocommands.DriveWithIntake;
 import frc.robot.autocommands.HopperSpin;
+import frc.robot.autocommands.IntakeDown;
+import frc.robot.autocommands.LimelightAlign;
 import frc.robot.autocommands.OneSideTurn;
+import frc.robot.autocommands.OneSideTurnLeft;
 import frc.robot.autocommands.ShootBall;
 import frc.robot.autocommands.TurnToAngle;
 import frc.robot.autocommands.Wait;
@@ -45,6 +48,18 @@ public abstract class AutonMode {
 
     protected void driveWithIntake(double seconds, double power, double distance) {
         runCommand(new DriveWithIntake(seconds, power, distance));
+    }
+
+    protected void intakeDown(double seconds) {
+        runCommand(new IntakeDown(seconds));
+    }
+
+    protected void leftsideTurn(double seconds, double leftPower, double rightPower, double distance) {
+        runCommand(new OneSideTurnLeft(seconds, leftPower, rightPower, distance));
+    }
+
+    protected void limelightAlign(double seconds) {
+        runCommand(new LimelightAlign(seconds));
     }
 
     private void runCommand(AutoCommandBase command) {
