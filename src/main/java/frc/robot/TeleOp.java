@@ -254,6 +254,8 @@ public class TeleOp {
             Climber.runUpDownToPosition(Constants.DOWN_CLIMB_POSITION, Constants.CLIMBER_SPEED);
         } else if (reset.getAButton()) {
             Climber.reset(Constants.CLIMBER_SPEED / 4);
+        } else if (climber.getRightTriggerButton()) {
+            Climber.climb(Constants.CLIMBER_SPEED / 2);
         } else {
             Climber.climb(0.0);
         }

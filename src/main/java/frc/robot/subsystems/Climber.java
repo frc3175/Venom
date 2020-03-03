@@ -105,6 +105,11 @@ public class Climber {
         rightClimbTalon.set(ControlMode.PercentOutput, climbSpeed);
     }
 
+    public static void resetEncoders() {
+        leftClimbTalon.setSelectedSensorPosition(0);
+    }
+
+
     public static void pushClimberEncoderValue() {
         SmartDashboard.putNumber("leftClimbTalon", leftClimbTalon.getSelectedSensorPosition());
     }
