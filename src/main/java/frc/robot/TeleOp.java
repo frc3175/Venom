@@ -24,6 +24,7 @@ public class TeleOp {
     private static Compressor compressor;
     private static boolean state = true;
 
+
     // Creates an instance
     public static TeleOp getInstance() {
         if (instance == null)
@@ -47,6 +48,7 @@ public class TeleOp {
         SmartDashboard.putNumber("kI", 0);
         SmartDashboard.putNumber("kD", 0);
     
+        Climber.resetEncoders();
 
         agitator = new Timer();
         shooterDelay = new Timer();
@@ -114,9 +116,9 @@ public class TeleOp {
         */
         Limelight.forceLEDsOn();
 
-        if (driver.getLeftBumper()) { // If the left bumper is pressed
+        if (manip.getXButton()) { // If the left bumper is pressed
             if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (driver.getLeftBumper()) {
+                if (manip.getXButton()) {
                         Limelight.dumbLineup();
                 } else {
                     if (DriveTrain.ispidEnabled()) {
@@ -126,9 +128,9 @@ public class TeleOp {
                 }
             } else {
             }
-        } else if (driver.getAButton()) {
+        } else if (manip.getAButton()) {
             if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (driver.getAButton()) {
+                if (manip.getAButton()) {
                         Limelight.goToDistance(true);
                 } else {
                     Limelight.goToDistance(false);
@@ -261,17 +263,17 @@ public class TeleOp {
         }
         //Folding - left climb
         if (climber.getLeftStickYAxis() > 0.2) {
-            Climber.leftFoldSet(Constants.CLIMBER_SPEED);
+            Climber.leftFoldSet(Constants.FOLDER_SPEED);
         } else if (climber.getLeftStickYAxis() < -0.2) {
-            Climber.leftFoldSet(-Constants.CLIMBER_SPEED);
+            Climber.leftFoldSet(-Constants.FOLDER_SPEED);
         } else {
             Climber.leftFoldSet(0.0);
         }
         //Folding - right climb
         if (climber.getRightStickYAxis() > 0.2) {
-            Climber.rightFoldSet(Constants.CLIMBER_SPEED);
+            Climber.rightFoldSet(Constants.FOLDER_SPEED);
         } else if (climber.getRightStickYAxis() < -0.2) {
-            Climber.rightFoldSet(-Constants.CLIMBER_SPEED);
+            Climber.rightFoldSet(-Constants.FOLDER_SPEED);
         } else {
             Climber.rightFoldSet(0.0);
         }

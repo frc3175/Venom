@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -24,10 +26,14 @@ import frc.robot.utilities.LEDs;
 public class Robot extends TimedRobot{
 
   AutonMode autonCommand;
-	SendableChooser<AutonMode> autoChooser;
+  SendableChooser<AutonMode> autoChooser;
+    //Camera
+  private static UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 
   @Override
   public void robotInit() {
+    //Camera
+    camera.setResolution(200, 200);
 
     //gets the instance of the subsystems
     DriveTrain.getInstance();
@@ -37,6 +43,8 @@ public class Robot extends TimedRobot{
     Shooter.getInstance();
     Diagnostics.getInstance();
     LEDs.getInstance();
+
+    Limelight.changePipeline(1);
 
     //Auton Choosers
     autoChooser = new SendableChooser<AutonMode>();

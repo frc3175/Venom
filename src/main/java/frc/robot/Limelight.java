@@ -27,8 +27,8 @@ public class Limelight {
 	 * 2nd trench
 	 * 3rd behind trench (probably won't do this)
 	 */
-	private static double[] distances = {70.5, 128}; // should be in Inches???
-    public static double[] RPMs = {5700, 5700};
+	private static double[] distances = {87, 177}; // should be in Inches???
+    public static double[] RPMs = {5700, 5450};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);
@@ -86,20 +86,33 @@ public class Limelight {
 			DriveTrain.drive(0, power);
 		}
 	}
+	
+	public static double findClosestDistance() {
+        double myNumber = distanceCalulator(Limelight.getY());
+        double distance = Math.abs(distances[0] - myNumber);
+        int idx = 0;
+        for(int c = 0; c < distances.length; c++){
+            double cdistance = Math.abs(distances[c] - myNumber);
+            if(cdistance < distance){
+                idx = c;
+                distance = cdistance;
+            }
+		}
+		return distances[idx];
+	}
 
 	public static void goToDistance(boolean value) {
 		Limelight.testFeed();
 		double distance = distanceCalulator(Limelight.getY());
 		double power = distance * 0.002;
-		System.out.println("Im going to " + findClosestDistance());
-		if(value) {
-			if (distance <= findClosestDistance() - 1.5d) { // 5 acts as a range
+		System.out.println("Im going to " + findClosestDistance());{
+		if (distance < findClosestDistance() - 3d) { // 5 acts as a range
 				DriveTrain.drive(power, -power); // should go back if distance is short
-			} else if (distance >= findClosestDistance() + 1.5d) { // 5 acts as a range
-				DriveTrain.drive(-power, power); // should drive forward
+			 } else if (distance >= findClosestDistance() + 3d) { // 5 acts as a range
+			 	DriveTrain.drive(-power, power); // should drive forward
+			} else {
+				DriveTrain.drive(0, 0);
 			}
-		} else {
-			DriveTrain.drive(0, 0);
 		}
 	}
 
@@ -149,17 +162,4 @@ public class Limelight {
         }
 	}
 
-	public static double findClosestDistance() {
-        double myNumber = distanceCalulator(Limelight.getY());
-        double distance = Math.abs(distances[0] - myNumber);
-        int idx = 0;
-        for(int c = 0; c < distances.length; c++){
-            double cdistance = Math.abs(distances[c] - myNumber);
-            if(cdistance < distance){
-                idx = c;
-                distance = cdistance;
-            }
-		}
-		return distances[idx];
-	}
 }

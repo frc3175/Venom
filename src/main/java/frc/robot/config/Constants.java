@@ -88,9 +88,10 @@ public class Constants {
     public static final int RIGHT_CLIMBER_TALON = 6;
     public static final int LEFT_FOLDER = 2;
     public static final int RIGHT_FOLDER = 3;
-    public static final int UP_CLIMB_POSITION = 10000;
-    public static final int DOWN_CLIMB_POSITION = 20000;
-    public static final double CLIMBER_SPEED = 1;
+    public static final int UP_CLIMB_POSITION = 90000;
+    public static final int DOWN_CLIMB_POSITION = 225000;
+    public static final double CLIMBER_SPEED = 0.85;
+    public static final double FOLDER_SPEED = 1;
 
     /**
      * =====================

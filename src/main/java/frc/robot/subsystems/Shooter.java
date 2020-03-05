@@ -50,17 +50,30 @@ public class Shooter{
         masterShooterTalon.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
         masterShooterTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
 
-        masterShooterTalon.enableCurrentLimit(false);
+        followerTalon.configFactoryDefault();
+        followerTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        followerTalon.setSensorPhase(true);
+        followerTalon.configNominalOutputForward(0, Constants.kTimeoutMs);
+        followerTalon.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        followerTalon.configPeakOutputForward(1, Constants.kTimeoutMs);
+        followerTalon.configPeakOutputReverse(1, Constants.kTimeoutMs);
+
+        //Gains
+        followerTalon.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+        followerTalon.config_kP(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kP, Constants.kTimeoutMs);
+        followerTalon.config_kI(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kI, Constants.kTimeoutMs);
+        followerTalon.config_kD(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kD, Constants.kTimeoutMs);
+
+        masterShooterTalon.enableCurrentLimit(true);
         masterShooterTalon.configPeakCurrentLimit(40);
         masterShooterTalon.configPeakCurrentDuration(0);
         masterShooterTalon.configContinuousCurrentLimit(30);
 
-        followerTalon.enableCurrentLimit(false);
+        followerTalon.enableCurrentLimit(true);
         followerTalon.configPeakCurrentLimit(40);
         followerTalon.configPeakCurrentDuration(0);
         followerTalon.configContinuousCurrentLimit(30);
 
-        followerTalon.follow(masterShooterTalon);
 
 
     }
@@ -69,15 +82,17 @@ public class Shooter{
         if (pressed) {
             double targetVelocity_UnitsPer100ms = Limelight.findRPM();
             masterShooterTalon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+            followerTalon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
         } else {
             masterShooterTalon.set(ControlMode.Velocity, 0);
+            followerTalon.set(ControlMode.Velocity, 0);
             }
         }
     
 
     public static boolean reachedRPM() {
         for(int i = 0; i < Limelight.RPMs.length; i++) {
-            if (masterShooterTalon.getSelectedSensorVelocity() >= Limelight.RPMs[i] - 20 && masterShooterTalon.getSelectedSensorVelocity() <= Limelight.RPMs[i] + 20) {
+            if (followerTalon.getSelectedSensorVelocity() >= Limelight.RPMs[i] - 20 && followerTalon.getSelectedSensorVelocity() <= Limelight.RPMs[i] + 20) {
                 return true;
             }
         } return false;
