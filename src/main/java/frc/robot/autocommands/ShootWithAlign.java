@@ -22,12 +22,8 @@ public class ShootWithAlign extends AutoCommandBase {
 	protected void run() {
         Limelight.dumbLineup();
         Shooter.shoot(true);
-        if(timeOut <= 1) {
-		    Shooter.hopperPower(Constants.HOPPER_AGITATION_FORWARD);
-        } else if(timeOut > 1) {
-            Shooter.hopperPower(hopperPower);
+        Shooter.hopperPower(hopperPower);
         }
-    }
 
 	@Override
 	public void end() {
