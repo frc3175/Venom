@@ -7,16 +7,14 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.automodes.AutonMode;
-import frc.robot.automodes.DriveStraight;
 import frc.robot.automodes.SixBall;
 import frc.robot.automodes.ThreeBall;
+import frc.robot.automodes.TurnToAngleTest;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
@@ -27,13 +25,11 @@ public class Robot extends TimedRobot{
 
   AutonMode autonCommand;
   SendableChooser<AutonMode> autoChooser;
-    //Camera
-  private static UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 
   @Override
   public void robotInit() {
-    //Camera
-    camera.setResolution(200, 200);
+
+
 
     //gets the instance of the subsystems
     DriveTrain.getInstance();
@@ -43,14 +39,14 @@ public class Robot extends TimedRobot{
     Shooter.getInstance();
     Diagnostics.getInstance();
     LEDs.getInstance();
+    RobotInit.getInstance();
 
-    Limelight.changePipeline(1);
-
+    RobotInit.init();
     //Auton Choosers
     autoChooser = new SendableChooser<AutonMode>();
     autoChooser.setDefaultOption("Three Ball Auto", new ThreeBall());
-    autoChooser.addOption("Test Auton", new DriveStraight());
     autoChooser.addOption("Six Ball Auto", new SixBall());
+    autoChooser.addOption("Turn to Angle Test", new TurnToAngleTest());
 
     SmartDashboard.putData("Auto mode", autoChooser);
     SmartDashboard.putNumber("Match Time:", DriverStation.getInstance().getMatchTime());
@@ -60,7 +56,6 @@ public class Robot extends TimedRobot{
   public void autonomousInit() {
     autoChooser.getSelected().start(); // Auton init
     DriveTrain.resetGyro();
-    Limelight.forceLEDsOn();
   }
 
 

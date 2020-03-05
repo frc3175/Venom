@@ -86,6 +86,18 @@ public class Limelight {
 			DriveTrain.drive(0, power);
 		}
 	}
+
+	public static void autonAlign() {
+		Limelight.testFeed();
+		double x = Math.abs(Limelight.getX());
+		double power = x * 0.12;
+		if (Limelight.getX() > 0d) {
+			DriveTrain.drive(-power, 0);
+		} 
+		if (Limelight.getX() < -0d) {
+			DriveTrain.drive(0, power);
+		}
+	}
 	
 	public static double findClosestDistance() {
         double myNumber = distanceCalulator(Limelight.getY());

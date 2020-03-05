@@ -1,5 +1,8 @@
 package frc.robot.autocommands;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI.Port;
 import frc.robot.DriveTrain;
 
 
@@ -7,6 +10,7 @@ public class TurnToAngle extends AutoCommandBase {
 	
 	private double angle = 0;
 	private double power;
+    private static AHRS autonGyro = new AHRS(Port.kMXP);
 	
 	
 	public TurnToAngle(double timeOut, double angle, double power) {
@@ -22,9 +26,9 @@ public class TurnToAngle extends AutoCommandBase {
 
 	@Override
 	protected void run() {
-		if (DriveTrain.getAngle() < angle && (Math.abs(DriveTrain.getAngle() - angle) > 2)) { // 2 is the range 
+		if (autonGyro.getAngle() < angle && (Math.abs(autonGyro.getAngle() - angle) > 2)) { // 2 is the range 
 			DriveTrain.drive(power, power); // should turn left
-		} else if (DriveTrain.getAngle() > angle && (Math.abs(DriveTrain.getAngle() - angle) > 2)) { // range
+		} else if (autonGyro.getAngle() > angle && (Math.abs(autonGyro.getAngle() - angle) > 2)) { // range
 			DriveTrain.drive(-power, -power); // should turn right
 		} else {
 			DriveTrain.drive(0, 0);
@@ -33,12 +37,9 @@ public class TurnToAngle extends AutoCommandBase {
 
 	@Override
 	public void end() {
-		DriveTrain.disablePID();
-		System.out.println(DriveTrain.getAngle());
+		System.out.println(autonGyro.getAngle());
 		DriveTrain.resetGyro();
 		
-		//DriveTrain.resetEncoder();
-		//SmartDashboard.putNumber("AUTO GYROOO", DriveTrain.getAngle());
 	}
 
 	@Override

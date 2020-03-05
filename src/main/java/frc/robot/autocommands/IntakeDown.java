@@ -1,7 +1,6 @@
 package frc.robot.autocommands;
 
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
 
 
 public class IntakeDown extends AutoCommandBase {

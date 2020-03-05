@@ -43,11 +43,11 @@ public class TeleOp {
 
     // Init function (Run Once (In RobotInit()))
     public static void init() {
-        
+
         SmartDashboard.putNumber("kP", 0);
         SmartDashboard.putNumber("kI", 0);
         SmartDashboard.putNumber("kD", 0);
-    
+        
         Climber.resetEncoders();
 
         agitator = new Timer();
@@ -101,22 +101,21 @@ public class TeleOp {
 
 
 
-        Limelight.changePipeline(1);
         
         // System.out.println("HAS VALID TARGETS: " + Limelight.hasValidTargets());
 
         double linearSpeed = Utils.deadband(driver.getRawAxis(1), Constants.driveDeadband);
         double curveSpeed = Utils.deadband(-driver.getRawAxis(4), Constants.turnDeadband);
 
-//342
         /*
         * =====================================================
-        *    Limelight Controlled by Driver Rumbles Operator
+        *            Limelight Controlled by ManIP
         * =====================================================
         */
-        Limelight.forceLEDsOn();
 
         if (manip.getXButton()) { // If the left bumper is pressed
+            Limelight.changePipeline(1);
+            Limelight.forceLEDsOn();
             if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (manip.getXButton()) {
                         Limelight.dumbLineup();
@@ -129,6 +128,8 @@ public class TeleOp {
             } else {
             }
         } else if (manip.getAButton()) {
+            Limelight.changePipeline(1);
+            Limelight.forceLEDsOn();
             if (Limelight.hasValidTargets()) { // If limelight sees a target
                 if (manip.getAButton()) {
                         Limelight.goToDistance(true);
@@ -143,6 +144,7 @@ public class TeleOp {
             }
         } else {
             DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
+            Limelight.forceLEDsOff();
         }
 
         //Go straight go reverse

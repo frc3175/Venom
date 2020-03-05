@@ -1,33 +1,30 @@
 package frc.robot.autocommands;
 
-import frc.robot.DriveTrain;
+import frc.robot.subsystems.Intake;
 
-public class Wait extends AutoCommandBase {
 
+public class IntakeUp extends AutoCommandBase {
 	
-	public Wait(double timeOut) {
+	
+	public IntakeUp(double timeOut) {
 		super(timeOut);
 	}
 
-	@Override
 	public void init() {
-		
 	}
 
 	@Override
 	protected void run() {
-		DriveTrain.drive(0, 0);
-		//Shooter.shoot(0);
-	}
+		Intake.IntakeUp();
+    }
 
 	@Override
 	public void end() {
-		
 	}
 
 	@Override
 	protected String getCommandName() {
-		return null;
+		return "Intake Up";
 	}
 
 }

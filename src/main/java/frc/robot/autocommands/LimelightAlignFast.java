@@ -2,11 +2,11 @@ package frc.robot.autocommands;
 
 import frc.robot.Limelight;
 
-public class LimelightAlign extends AutoCommandBase {
+public class LimelightAlignFast extends AutoCommandBase {
 	
 	
 	
-	public LimelightAlign(double timeOut) {
+	public LimelightAlignFast(double timeOut) {
 		super(timeOut);
 	}
 
@@ -16,7 +16,7 @@ public class LimelightAlign extends AutoCommandBase {
 	@Override
 	protected void run() {
 		Limelight.forceLEDsOn();
-        Limelight.dumbLineup();
+        Limelight.autonAlign();
     }
 
 	@Override
@@ -25,7 +25,7 @@ public class LimelightAlign extends AutoCommandBase {
 
 	@Override
 	protected String getCommandName() {
-		return "Limelight Align";
+		return "Limelight Align Fast";
 	}
 
 }
