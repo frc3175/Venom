@@ -23,6 +23,7 @@ public class TeleOp {
     private static Timer agitator, shooterDelay;
     private static Compressor compressor;
     private static boolean state = true;
+    private static boolean climberControllerState = false;
 
 
     // Creates an instance
@@ -109,15 +110,16 @@ public class TeleOp {
 
         /*
         * =====================================================
-        *            Limelight Controlled by ManIP
+        *            Limelight Controlled by Driver
         * =====================================================
         */
 
-        if (manip.getXButton()) { // If the left bumper is pressed
+        if (driver.getLeftBumper()) { // If the left bumper is pressed
             Limelight.changePipeline(1);
             Limelight.forceLEDsOn();
+            manip.setDoubleRumble(0.5);
             if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (manip.getXButton()) {
+                if (driver.getLeftBumper()) {
                         Limelight.dumbLineup();
                 } else {
                     if (DriveTrain.ispidEnabled()) {
@@ -127,11 +129,12 @@ public class TeleOp {
                 }
             } else {
             }
-        } else if (manip.getAButton()) {
+        } else if (driver.getAButton()) {
             Limelight.changePipeline(1);
             Limelight.forceLEDsOn();
+            manip.setDoubleRumble(0.5);
             if (Limelight.hasValidTargets()) { // If limelight sees a target
-                if (manip.getAButton()) {
+                if (driver.getAButton()) {
                         Limelight.goToDistance(true);
                 } else {
                     Limelight.goToDistance(false);
@@ -145,6 +148,7 @@ public class TeleOp {
         } else {
             DriveTrain.curvatureDrive(linearSpeed, curveSpeed, driver.getRightBumper()); // Drive Curvature
             Limelight.forceLEDsOff();
+            manip.setDoubleRumble(0);
         }
 
         //Go straight go reverse
@@ -159,6 +163,16 @@ public class TeleOp {
          */
 
         // Intake with agitator
+
+        /**
+         * ============================= 
+         *    Enable Climber Controller 
+         * =============================
+         */
+        if(manip.getStartButton()) {
+            climberControllerState = true;
+        }
+
         /**
          * ====================== 
          *    Intake Control 
@@ -205,10 +219,10 @@ public class TeleOp {
 
         if (!manip.getYButton()) {
             if (manip.getBButton()) {
+                Limelight.forceLEDsOn();
                 compressor.setClosedLoopControl(false);
                 Shooter.shoot(true); // Shoot balls
-                driver.setRightRumble(0.6);
-                driver.setLeftRumble(0.6);
+                driver.setDoubleRumble(0.6);
                     if (shooterDelay.get() < 2) {
                 } else if (shooterDelay.get() > 2) {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
@@ -218,19 +232,12 @@ public class TeleOp {
                     Shooter.hopperPower(Constants.HOPPER_SPEED);
                 } 
             } else {
-                driver.setRightRumble(0);
-                driver.setLeftRumble(0);
+                driver.setDoubleRumble(0);
                 Shooter.shoot(false); // Shooter off
                 Shooter.hopperPower(0d);
                 shooterDelay.reset();
             }
         }
-
-        // if(manip.getBackButton()) {
-        //     Shooter.passBall(true);
-        // } else {
-        //     Shooter.passBall(false);
-        // }
 
         /**
          * ===================== 
@@ -251,38 +258,45 @@ public class TeleOp {
          * =====================
          */
 
-        //run based on button pressed
-        if (climber.getLeftBumper()) {
-            Climber.runUpDownToPosition(Constants.UP_CLIMB_POSITION, Constants.CLIMBER_SPEED);
-        } else if (climber.getRightBumper()) {
-            Climber.runUpDownToPosition(Constants.DOWN_CLIMB_POSITION, Constants.CLIMBER_SPEED);
-        } else if (reset.getAButton()) {
-            Climber.reset(Constants.CLIMBER_SPEED / 4);
-        } else if (climber.getRightTriggerButton()) {
-            Climber.climb(Constants.CLIMBER_SPEED / 2);
-        } else {
-            Climber.climb(0.0);
-        }
-        //Folding - left climb
-        if (climber.getLeftStickYAxis() > 0.2) {
-            Climber.leftFoldSet(Constants.FOLDER_SPEED);
-        } else if (climber.getLeftStickYAxis() < -0.2) {
-            Climber.leftFoldSet(-Constants.FOLDER_SPEED);
-        } else {
-            Climber.leftFoldSet(0.0);
-        }
-        //Folding - right climb
-        if (climber.getRightStickYAxis() > 0.2) {
-            Climber.rightFoldSet(Constants.FOLDER_SPEED);
-        } else if (climber.getRightStickYAxis() < -0.2) {
-            Climber.rightFoldSet(-Constants.FOLDER_SPEED);
-        } else {
-            Climber.rightFoldSet(0.0);
-        }
+        if (climberControllerState) {
+            // run based on button pressed
+            if (climber.getLeftBumper()) {
+                Climber.runUpDownToPosition(Constants.UP_CLIMB_POSITION, Constants.CLIMBER_SPEED);
+            } else if (climber.getRightBumper()) {
+                Climber.runUpDownToPosition(Constants.DOWN_CLIMB_POSITION, Constants.CLIMBER_SPEED);
+            } else if (reset.getAButton()) {
+                Climber.reset(Constants.CLIMBER_SPEED / 4);
+            } else if (climber.getRightTriggerButton()) {
+                Climber.climb(Constants.CLIMBER_SPEED / 2);
+            } else {
+                Climber.climb(0.0);
+            }
 
-        //Single button fold
-        if(climber.getAButton()) {
-            Climber.foldSet(Constants.CLIMBER_SPEED);
+            // Folding - left climb
+            if (!climber.getAButton()) {
+                if (climber.getLeftStickYAxis() > 0.2) {
+                    Climber.leftFoldSet(Constants.FOLDER_SPEED);
+                } else if (climber.getLeftStickYAxis() < -0.2) {
+                    Climber.leftFoldSet(-Constants.FOLDER_SPEED);
+                } else {
+                    Climber.leftFoldSet(0.0);
+                }
+            }
+            // Folding - right climb
+            if (!climber.getAButton()) {
+                if (climber.getRightStickYAxis() > 0.2) {
+                    Climber.rightFoldSet(Constants.FOLDER_SPEED);
+                } else if (climber.getRightStickYAxis() < -0.2) {
+                    Climber.rightFoldSet(-Constants.FOLDER_SPEED);
+                } else {
+                    Climber.rightFoldSet(0.0);
+                }
+            }
+
+            // Single button fold
+            if (climber.getAButton()) {
+                Climber.foldSet(Constants.CLIMBER_SPEED);
+            }
         }
     }
 }

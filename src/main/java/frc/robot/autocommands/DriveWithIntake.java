@@ -35,7 +35,8 @@ public class DriveWithIntake extends AutoCommandBase {
 	public void end() {
 		//DriveTrain.stop();
 		DriveTrain.resetGyro();
-        DriveTrain.resetEncoder();
+		DriveTrain.resetEncoder();
+		Intake.intakePowerCell(0);
 	}
 
 	@Override

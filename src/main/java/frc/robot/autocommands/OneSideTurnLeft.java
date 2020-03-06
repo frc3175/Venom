@@ -20,7 +20,7 @@ public class OneSideTurnLeft extends AutoCommandBase {
 	@Override
 	protected void run() {
 		if(Math.abs(DriveTrain.getEncoderDistanceLeft()) < Math.abs(distance)){
-			DriveTrain.drive(left, -right);
+			DriveTrain.drive(left, right);
 		} else {
 			DriveTrain.drive(0, 0);
 		}

@@ -2,13 +2,13 @@
             Intake
 ===============================
 
-Intake up = X
+Intake up = Left Bumper
 
-Intake Down = A
+Intake Down = Right Bumper
 
 Intake = Y
 
-
+Agitate Intake (While intake is up) = Y 
 
 ===============================
             Shooter
@@ -20,14 +20,18 @@ Shooter = B
             Climber
 ===============================
 
-Climber Unfold = Right trigger button
+Climber Unfold = Y sticks for individual and A for both
 
-Climb = left trigger button
+Falcons Up = Left Bumper
+
+Falcons Down = Right Bumper
 
 
 ===============================
             Limelight
 ===============================
 
-Limelight auto = left bumper
+Limelight Align = Left Bumper (Driver Controller)
+
+Limelight Distance = A Button (Driver Controller)
 

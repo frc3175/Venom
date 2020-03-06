@@ -7,14 +7,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.automodes.AutonMode;
-import frc.robot.automodes.SixBall;
-import frc.robot.automodes.ThreeBall;
-import frc.robot.automodes.TurnToAngleTest;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Diagnostics;
 import frc.robot.subsystems.Intake;
@@ -23,13 +16,9 @@ import frc.robot.utilities.LEDs;
 
 public class Robot extends TimedRobot{
 
-  AutonMode autonCommand;
-  SendableChooser<AutonMode> autoChooser;
 
   @Override
   public void robotInit() {
-
-
 
     //gets the instance of the subsystems
     DriveTrain.getInstance();
@@ -39,31 +28,21 @@ public class Robot extends TimedRobot{
     Shooter.getInstance();
     Diagnostics.getInstance();
     LEDs.getInstance();
-    RobotInit.getInstance();
+    Initializations.getInstance();
+    Initializations.init();
 
-    RobotInit.init();
-    //Auton Choosers
-    autoChooser = new SendableChooser<AutonMode>();
-    autoChooser.setDefaultOption("Three Ball Auto", new ThreeBall());
-    autoChooser.addOption("Six Ball Auto", new SixBall());
-    autoChooser.addOption("Turn to Angle Test", new TurnToAngleTest());
-
-    SmartDashboard.putData("Auto mode", autoChooser);
-    SmartDashboard.putNumber("Match Time:", DriverStation.getInstance().getMatchTime());
   }
 
   @Override
   public void autonomousInit() {
-    autoChooser.getSelected().start(); // Auton init
+    Initializations.autonInit();
     DriveTrain.resetGyro();
   }
 
 
   @Override
   public void autonomousPeriodic() {
-    //Periodic encoders
-    SmartDashboard.putNumber("Drive Train", DriveTrain.getEncoderAverage());
-		SmartDashboard.putNumber("AUTO GYRO", DriveTrain.getAngle());
+
   }
   
   @Override
