@@ -27,8 +27,8 @@ public class Limelight {
 	 * 2nd trench
 	 * 3rd behind trench (probably won't do this)
 	 */
-	private static double[] distances = {87, 177}; // should be in Inches???
-    public static double[] RPMs = {5700, 5450};
+	private static double[] distances = {87, 150}; // should be in Inches???
+    public static double[] RPMs = {5700, 5580};
 
 	public static void testFeed() {
 		double x = table.getEntry("tx").getDouble(0.0);
@@ -81,7 +81,7 @@ public class Limelight {
 		double power = x * 0.08;
 		if (Limelight.getX() > 0d) {
 			DriveTrain.drive(-power, 0);
-		} 
+		}
 		if (Limelight.getX() < -0d) {
 			DriveTrain.drive(0, power);
 		}

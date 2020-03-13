@@ -92,6 +92,7 @@ public class Constants {
     public static final int DOWN_CLIMB_POSITION = 225000;
     public static final double CLIMBER_SPEED = 0.85;
     public static final double FOLDER_SPEED = 1;
+    public static final double CLIMBER_DEADBAND = 0.2;
 
     /**
      * =====================

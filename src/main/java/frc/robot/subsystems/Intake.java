@@ -8,11 +8,6 @@ import frc.robot.config.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
-/**
- * <summary>
- * Code meant for the Cargo Intake/Cargo Delivery System
- * </summary>
- */
 public class Intake{
     private static Intake instance;
     private static TalonSRX cellIntakeTalon;
